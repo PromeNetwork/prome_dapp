@@ -70,6 +70,7 @@ const callbacks = {
   },
 }
 export const authOptions = {
+  debug: true,
   // Configure one or more authentication providers
   secret:process.env.SECRET,
   providers: [
