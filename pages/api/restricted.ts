@@ -1,7 +1,11 @@
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "./auth/[...nextauth]"
-
-export default async (req, res) => {
+import { authOptions ,} from "./auth/[...nextauth]"
+import  type {
+    GetServerSidePropsContext,
+    NextApiRequest,
+    NextApiResponse,
+  } from "next"
+export default async function(req:NextApiRequest, res:NextApiResponse){
   const session = await getServerSession(req, res, authOptions)
 
   if (session) {
