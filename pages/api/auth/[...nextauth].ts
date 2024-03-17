@@ -7,6 +7,7 @@ interface newSession extends Session{
   accessToken?:string
   expires_at?:number
   error?:string
+  id?:string
 }
 interface NewAccount extends Account{
   error?:string
@@ -40,6 +41,10 @@ const callbacks = {
   },
   jwt: async ({ token, account }:{token:JWT,account?:Account|null}) => {
     console.log("token,account",token,account)
+    if (account) {
+      token.accessToken = account.access_token
+      token.id = account.id
+    }
       // if (account) {
       //     // This will only be executed at login. Each next invocation will skip this part.
       //     token.accessToken = account.access_token;
@@ -65,6 +70,7 @@ const callbacks = {
       newSession.accessToken = token.accessToken as string;
       newSession.expires_at = token.expires_at as number;
       newSession.error = token.error as string;
+      newSession.id=token.id as string; ;
 
       return newSession;
   },

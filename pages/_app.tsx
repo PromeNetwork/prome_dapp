@@ -11,6 +11,7 @@ import { RainbowKitProvider,getDefaultConfig } from '@rainbow-me/rainbowkit'
 
 import { Layout,Provider } from '@components/index'
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import {
   rainbowWallet,
   walletConnectWallet,

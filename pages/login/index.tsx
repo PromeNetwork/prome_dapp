@@ -2,8 +2,8 @@ import { useSession, signIn, signOut } from "next-auth/react"
 import Link from 'next/link'
 
 export default function Component() {
-  const { data: session } = useSession()
-  console.log(JSON.stringify(session?.user))
+  const { data: session,...res } = useSession()
+  console.log(JSON.stringify(session),JSON.stringify(res))
   if(session) {
     console.log("2",session.user)
     return <>
