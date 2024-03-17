@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { useEffect } from "react";
-import { useConnect, useAccount } from "wagmi";
+import { useContext, useEffect } from "react";
+import { useConnect, useAccount,type UseConnectParameters } from "wagmi";
 import { Button } from "..";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 
@@ -12,9 +12,9 @@ interface Props {
 export default function WalletOptionsModal(props: Props) {
   const { open, setOpen } = props;
 
-  const [{ data: connectData, loading: connectDataLoading, error }, connect] =
+  const connectData =
     useConnect();
-  const [{ data: accountData }] = useAccount();
+  const accountData= useAccount();
 
   useEffect(() => {
     accountData && setOpen(false);

@@ -1,44 +1,41 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { Provider, chain, defaultChains } from "wagmi";
-import { InjectedConnector } from "wagmi/connectors/injected";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { WalletLinkConnector } from "wagmi/connectors/walletLink";
+import { ReactNode,useState } from "react";
+import { SessionProvider } from "next-auth/react"
 
-const infuraApiKey = process.env.NEXT_PUBLIC_INFURA_API_KEY;
+import '@rainbow-me/rainbowkit/styles.css'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { WagmiProvider, createConfig ,type CreateConfigParameters} from 'wagmi'
+import { mainnet,bsc,goerli } from 'wagmi/chains'
 
-const chains = defaultChains;
+import { RainbowKitProvider,getDefaultConfig } from '@rainbow-me/rainbowkit'
 
-type Connector =
-  | InjectedConnector
-  | WalletConnectConnector
-  | WalletLinkConnector;
+import { Layout,Config } from '@components/index'
+import { connectorsForWallets } from '@rainbow-me/rainbowkit';
+import {
+  rainbowWallet,
+  walletConnectWallet,
+  metaMaskWallet,
+} from '@rainbow-me/rainbowkit/wallets';
 
-const connectors = ({ chainId }: { chainId?: number }): Connector[] => {
-  const rpcUrl =
-    chains.find((x) => x.id === chainId)?.rpcUrls?.[0] ??
-    chain.mainnet.rpcUrls[0];
-  return [
-    new InjectedConnector({ chains }),
-    new WalletConnectConnector({
-      options: {
-        infuraId: infuraApiKey,
-        qrcode: true,
-      },
-    }),
-    new WalletLinkConnector({
-      options: {
-        appName: "NextJS-wagmi",
-        jsonRpcUrl: `${rpcUrl}/${infuraApiKey}`,
-      },
-    }),
-  ];
-};
+const infuraApiKey = 'a79d66ef23ce4b4a9d44bf1e13768c73';
+const queryClient = new QueryClient()
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+
+export default function MyApp({ Component, pageProps,session }: AppProps) {
+
+  const [showWalletOptions, setShowWalletOptions] = useState(false);
   return (
-    <Provider autoConnect connectors={connectors}>
-      <Component {...pageProps} />
-    </Provider>
+    <WagmiProvider config={Config}>
+    <QueryClientProvider client={queryClient}>
+    <RainbowKitProvider>
+    <SessionProvider session={session}>
+      <Layout showWalletOptions={showWalletOptions} setShowWalletOptions={setShowWalletOptions}>
+        <Component {...pageProps} />
+      </Layout>
+      </SessionProvider>
+      </RainbowKitProvider>
+      </QueryClientProvider>
+      </WagmiProvider>
   );
 }
