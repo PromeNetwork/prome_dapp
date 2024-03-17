@@ -1,7 +1,5 @@
 
 
-import {Connect} from '@components/index'
-
 
 export default function Home() {
 

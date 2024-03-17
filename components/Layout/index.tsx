@@ -1,8 +1,7 @@
 import Head from "next/head";
-import {ActiveLink,Connect} from "..";
+import {ActiveLink,Connect} from "@components/index";
 import Image from "next/image";
 import { ReactNode,useEffect,useState } from "react";
-import { Button, MenuDropdown, WalletOptionsModal } from "..";
 import { useAccount,useSignMessage,useAccountEffect } from "wagmi";
 import { signMessage } from '@wagmi/core'
 import * as api from "@api/index";
@@ -11,7 +10,7 @@ import { Dialog } from '@headlessui/react'
 import { recoverMessageAddress } from 'viem'
 import {useAtom} from "helux";
 import { loginAtom } from '@hooks/index'
-import { Config} from '@components/index'
+import { config} from '@components/provider'
 import{ setLoginResult } from '@utils/storageUtils'
 
 
@@ -72,40 +71,40 @@ export default function Layout(props: Props) {
   
 
 
-  const renderLabel = () => {
-    if (accountData?.ens) {
-      return (
-        <>
-          <div className="relative w-8 h-8 mr-2">
-            {accountData.ens.avatar ? (
-              <Image
-                src={accountData?.ens.avatar}
-                alt="ENS Avatar"
-                layout="fill"
-                objectFit="cover"
-                className="rounded-full"
-              />
-            ) : (
-              <Image
-                src="/images/black-gradient.png"
-                alt="ENS Avatar"
-                layout="fill"
-                objectFit="cover"
-                className="rounded-full"
-              />
-            )}
-          </div>
-          <span className="truncate max-w-[100px]">
-            {accountData.ens?.name}
-          </span>
-        </>
-      );
-    }
+  // const renderLabel = () => {
+  //   if (accountData?.ens) {
+  //     return (
+  //       <>
+  //         <div className="relative w-8 h-8 mr-2">
+  //           {accountData.ens.avatar ? (
+  //             <Image
+  //               src={accountData?.ens.avatar}
+  //               alt="ENS Avatar"
+  //               layout="fill"
+  //               objectFit="cover"
+  //               className="rounded-full"
+  //             />
+  //           ) : (
+  //             <Image
+  //               src="/images/black-gradient.png"
+  //               alt="ENS Avatar"
+  //               layout="fill"
+  //               objectFit="cover"
+  //               className="rounded-full"
+  //             />
+  //           )}
+  //         </div>
+  //         <span className="truncate max-w-[100px]">
+  //           {accountData.ens?.name}
+  //         </span>
+  //       </>
+  //     );
+  //   }
 
-    return (
-      <span className="truncate max-w-[150px]">{accountData?.address}</span>
-    );
-  };
+  //   return (
+  //     <span className="truncate max-w-[150px]">{accountData?.address}</span>
+  //   );
+  // };
 
   // const renderButton = () => {
   //   if (accountData) {
@@ -217,10 +216,10 @@ export default function Layout(props: Props) {
         </Dialog>
       </header>
 
-      <WalletOptionsModal
+      {/* <WalletOptionsModal
         open={showWalletOptions}
         setOpen={setShowWalletOptions}
-      />
+      /> */}
 
       {/* <div className="absolute w-screen bg-gradient-to-r from-black to-white">
         <div className="flex items-center justify-between p-4">

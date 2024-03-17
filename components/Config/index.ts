@@ -1,5 +1,6 @@
-import { mainnet,bsc,goerli } from 'wagmi/chains'
-import { WagmiProvider, createConfig ,type CreateConfigParameters} from 'wagmi'
+import { mainnet, sepolia ,bsc, polygon,arbitrum } from '@wagmi/core/chains'
+import { WagmiProvider,type CreateConfigParameters } from 'wagmi'
+  import { http, createConfig , type Config } from '@wagmi/core'
 import { RainbowKitProvider,getDefaultConfig } from '@rainbow-me/rainbowkit'
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import {
@@ -7,7 +8,6 @@ import {
   walletConnectWallet,
   metaMaskWallet,
 } from '@rainbow-me/rainbowkit/wallets';
-const infuraApiKey = 'a79d66ef23ce4b4a9d44bf1e13768c73';
 const connectors = connectorsForWallets(
     [
       {
@@ -20,9 +20,11 @@ const connectors = connectorsForWallets(
       projectId: '05621279f2b032319befec485ce5b7cb',
     }
   );
-const cfg:CreateConfigParameters={
-  chains: [mainnet,bsc,goerli],
-  infuraApiKey,
-  connectors
-}
-export default createConfig(cfg)
+
+
+
+// const cfg:Config={
+//   chains: [mainnet, sepolia ,bsc, polygon,arbitrum ],
+//   connectors,
+// }
+// export default createConfig(cfg)

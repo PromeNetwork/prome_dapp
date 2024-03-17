@@ -1,8 +1,14 @@
+
+
 import {
     getCurrentAddress, getLoginResult, setCurrentAddress,
     setLoginResult
   } from "@utils/storageUtils";
-import { refreshToken } from "@api/index";
+
+  // eslint-disable-next-line no-unused-vars
+import { login } from "@api/index";
+
+// eslint-disable-next-line
 export const refreshTokenAction = async function () {
     const address = getCurrentAddress();
     if (!address) return;
@@ -11,6 +17,6 @@ export const refreshTokenAction = async function () {
     // if(!loginResult||!loginResult.refreshToken) {
     //   return 
     // }
-    const result = await refreshToken(loginResult.refreshToken);
+    const result = await login.refreshToken(loginResult.refreshToken);
     setLoginResult(JSON.stringify(result), address)
   }

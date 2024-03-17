@@ -1,19 +1,20 @@
 import Image from "next/image";
 import { useContext, useEffect } from "react";
 import { useConnect, useAccount,type UseConnectParameters } from "wagmi";
-import { Button } from "..";
+import { Button } from "@components/index";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
+import { config } from "@components/provider";
 
 interface Props {
   open: boolean;
+
   setOpen: (showWalletOptions: boolean) => void;
 }
 
 export default function WalletOptionsModal(props: Props) {
   const { open, setOpen } = props;
 
-  const connectData =
-    useConnect();
+  const connectData =useConnect();
   const accountData= useAccount();
 
   useEffect(() => {
@@ -35,10 +36,10 @@ export default function WalletOptionsModal(props: Props) {
             {connectData.connectors.map((c) => (
               <div key={c.id} className="mb-2 ml-2 mr-2 w-80">
                 <Button
-                  loading={connectDataLoading}
+                  loading={false}
                   width={80}
-                  disabled={!c.ready}
-                  onClick={() => connect(c)}
+                  disabled={!c.getChainId}
+                  onClick={() => {}}
                 >
                   <>
                     <div className="mr-3">
@@ -49,16 +50,16 @@ export default function WalletOptionsModal(props: Props) {
                         width={32}
                       />
                     </div>
-                    {`${c.name}${!c.ready ? " (unsupported)" : ""}`}
+                    {`${c.name}${!c.getChainId() ? " (unsupported)" : ""}`}
                   </>
                 </Button>
               </div>
             ))}
-            {error && (
+            {/* {error && (
               <div className="ml-2 text-red-500">
                 {error?.message ?? "Failed to connect"}
               </div>
-            )}
+            )} */}
 
             <div className="flex items-center justify-end p-3 mt-1">
               <button

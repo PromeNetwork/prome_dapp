@@ -1,9 +1,9 @@
-import { Loader } from "..";
+import { Loader } from "@components/index";
 
 interface Props {
-  children: string | JSX.Element;
+  children?: string | JSX.Element;
   width?: number;
-  loading: boolean;
+  loading?: boolean;
   [x: string]: any;
 }
 

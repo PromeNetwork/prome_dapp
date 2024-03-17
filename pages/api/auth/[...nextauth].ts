@@ -9,8 +9,8 @@ export default NextAuth({
     secret: process.env.SECRET,
   providers: [
     FacebookProvider({
-        clientId: process.env.FACEBOOK_ID,
-        clientSecret: process.env.FACEBOOK_SECRET
+        'clientId': process.env.FACEBOOK_ID!,
+        'clientSecret': process.env.FACEBOOK_SECRET!
       }),
     // OAuth authentication providers
     // AppleProvider({

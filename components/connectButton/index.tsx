@@ -36,6 +36,7 @@ const recoveredAddress = React.useRef<string>()
                 <Button
                   fill="outline"
                   onClick={openConnectModal}
+                  
                 //   icon={<Wallet width="20"/>}
                 />
               );

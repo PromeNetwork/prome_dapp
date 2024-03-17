@@ -7,4 +7,5 @@ export { default as MenuDropdown } from "./MenuDropdown";
 export { default as WalletOptionsModal } from "./WalletOptionsModal";
 export { default as ActiveLink } from "./link"
 export { default as Connect } from "./connectButton"
-export {default as Config} from "./Config"
+// export {default as Config} from "./Config"
+export {default as Provider } from './provider'

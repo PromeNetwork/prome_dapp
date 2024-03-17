@@ -3483,7 +3483,7 @@
   resolved "https://registry.npmmirror.com/@vanilla-extract/sprinkles/-/sprinkles-1.6.1.tgz"
   integrity sha512-N/RGKwGAAidBupZ436RpuweRQHEFGU+mvAqBo8PRMAjJEmHoPDttV8RObaMLrJHWLqvX+XUMinHUnD0hFRQISw==
 
-"@wagmi/connectors@4.1.14":
+"@wagmi/connectors@^4.1.14", "@wagmi/connectors@4.1.14":
   version "4.1.14"
   resolved "https://registry.npmmirror.com/@wagmi/connectors/-/connectors-4.1.14.tgz"
   integrity sha512-e8I89FsNBtzhIilU3nqmgMR9xvSgCfmkWLz9iCKBTqyitbK5EJU7WTEtjjYFm1v2J//JeAwaA2XEKtG9BLR9jQ==
@@ -11662,7 +11662,7 @@ viem@^1.1.4:
     isows "1.0.3"
     ws "8.13.0"
 
-viem@^2.8.9, viem@2.x:
+viem@^2.8.10, viem@2.x:
   version "2.8.10"
   resolved "https://registry.npmmirror.com/viem/-/viem-2.8.10.tgz"
   integrity sha512-rhIdRXWLPMUPjL2aI7oYNn4PrgEimbf2rxEkTjty0L+ZBIvPgKAOZFUeStpAfdWouTDO4yM84Xk4Hh2hrwiK9A==

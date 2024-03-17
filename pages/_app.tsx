@@ -10,7 +10,7 @@ import { mainnet,bsc,goerli } from 'wagmi/chains'
 
 import { RainbowKitProvider,getDefaultConfig } from '@rainbow-me/rainbowkit'
 
-import { Layout,Config } from '@components/index'
+import { Layout,Provider } from '@components/index'
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import {
   rainbowWallet,
@@ -18,24 +18,25 @@ import {
   metaMaskWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 
-const infuraApiKey = 'a79d66ef23ce4b4a9d44bf1e13768c73';
+
 const queryClient = new QueryClient()
 
 
-export default function MyApp({ Component, pageProps,session }: AppProps) {
+export default function MyApp({ Component, pageProps: { session, ...pageProps }}: AppProps) {
 
   const [showWalletOptions, setShowWalletOptions] = useState(false);
   return (
-    <WagmiProvider config={Config}>
-    <QueryClientProvider client={queryClient}>
-    <RainbowKitProvider>
+    // <WagmiProvider config={Config}>
+    // <QueryClientProvider client={queryClient}>
+   
+    <Provider>
+       <RainbowKitProvider>
     <SessionProvider session={session}>
       <Layout showWalletOptions={showWalletOptions} setShowWalletOptions={setShowWalletOptions}>
         <Component {...pageProps} />
       </Layout>
       </SessionProvider>
       </RainbowKitProvider>
-      </QueryClientProvider>
-      </WagmiProvider>
+      </Provider>
   );
 }

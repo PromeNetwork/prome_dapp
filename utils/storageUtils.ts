@@ -4,15 +4,15 @@ export function getCurrentAddress() {
     return localStorage.getItem(`${project}CurrentAddress`) || '';
 }
 
-export function setCurrentAddress(address) {
+export function setCurrentAddress(address:string) {
     return localStorage.setItem(`${project}CurrentAddress`, address);
 }
 
-export function getLoginResult(address) {
+export function getLoginResult(address:string) {
     return localStorage.getItem(`${project}LoginResult${address}`) || '{}';
 }
 
-export function setLoginResult(value, address) {
+export function setLoginResult(value:string, address:string) {
     return localStorage.setItem(`${project}LoginResult${address}`, value);
 }
 
@@ -24,7 +24,7 @@ export function removeAllLoginResult() {
       x => localStorage.removeItem(x)
 )
 }
-export function getCurrentAccessToken(address) {
+export function getCurrentAccessToken(address:string) {
     address=address||"";
     const loginResult = JSON.parse(getLoginResult(address.toLocaleLowerCase()));
     return loginResult.accessToken;
