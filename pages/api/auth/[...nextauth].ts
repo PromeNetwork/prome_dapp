@@ -67,12 +67,12 @@ const callbacks = {
 }
 export const authOptions = {
   // Configure one or more authentication providers
-  secret:'k0tyPpGSj1dVlGtvWV5r0u43FgdgBtoe1XIOKOfz5uk',
+  secret:process.env.SECRET,
   providers: [
     
     FacebookProvider({
-      clientId: '1698885600473995',
-      clientSecret: 'ef77d2f27df5e5257c5422b30884d4c2',
+      clientId: process.env.FACEBOOK_ID!,
+      clientSecret: process.env.FACEBOOK_SECRET!,
     }),
     // ...add more providers here
   ],
