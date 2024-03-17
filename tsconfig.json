@@ -21,7 +21,7 @@
       "@styles/*": ["styles/*"],
       "@content/*": ["content/*"],
       "@utils/*": ["utils/*"],
-      "@api/*":["api/*"],
+      "@service/*":["api/*"],
       "@hooks/*":["hooks/*"]
     }
   },

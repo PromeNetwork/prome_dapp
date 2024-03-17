@@ -34,6 +34,10 @@ async function refreshAccessToken(tokenObject: Account):Promise<NewAccount> {
   }
 }
 const callbacks = {
+  signIn: async ({user,account,profile}:{user: User|AdapterUser, account: Account|null, profile?: Profile|undefined}) => {
+    console.log("user,account,profile",user,account,profile)
+    return true
+  },
   jwt: async ({ token, account }:{token:JWT,account?:Account|null}) => {
     console.log("token,account",token,account)
       // if (account) {
@@ -51,7 +55,7 @@ const callbacks = {
 
       //     return Promise.resolve(token);
       // }
-     return Promise.resolve(token);
+     return token;
       // If the call arrives after 23 hours have passed, we allow to refresh the token.
   },
   session: async ({session,token}: { session: Session; token: JWT; user: AdapterUser; } & { newSession: any; trigger: "update"; }) => {
@@ -62,7 +66,7 @@ const callbacks = {
       newSession.expires_at = token.expires_at as number;
       newSession.error = token.error as string;
 
-      return Promise.resolve(newSession);
+      return newSession;
   },
 }
 export const authOptions = {
