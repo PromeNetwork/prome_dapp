@@ -2,7 +2,13 @@ import NextAuth ,{type CallbacksOptions,type Profile,type Account,type User,Sess
 import {type JWT} from "next-auth/jwt"
 import {type AdapterUser} from "next-auth/adapters"
 import FacebookProvider from "next-auth/providers/facebook"
+import Twitter from "next-auth/providers//twitter"
 import axios from 'axios';
+import  type {
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+} from "next"
 interface newSession extends Session{
   accessToken?:string
   expires_at?:number
@@ -80,10 +86,14 @@ export const authOptions = {
   // Configure one or more authentication providers
   secret:process.env.SECRET,
   providers: [
-    
     FacebookProvider({
       clientId: process.env.FACEBOOK_ID!,
       clientSecret: process.env.FACEBOOK_SECRET!,
+    }),
+    Twitter({
+      clientId: process.env.TWITTER_ID!,
+      clientSecret: process.env.TWITTER_SECRET!,
+      version: "2.0",
     }),
     // ...add more providers here
   ],
@@ -91,4 +101,6 @@ export const authOptions = {
 }
 console.log(process.env.FACEBOOK_ID,process.env.FACEBOOK_SECRET)
 
-export default NextAuth(authOptions)
+export default async function handler(req:NextApiRequest, res:NextApiResponse){
+  return NextAuth(req,res,authOptions)
+}
