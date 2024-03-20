@@ -1,9 +1,14 @@
-import NextAuth ,{type CallbacksOptions,type Profile,type Account,type User,Session}from "next-auth"
+import NextAuth , { type CallbacksOptions,type Profile,type Account,type User,Session  }from "next-auth"
 import {type JWT} from "next-auth/jwt"
+import {EndpointHandler, type OAuthConfig, type UserinfoEndpointHandler,type OAuthUserConfig } from "next-auth/providers"
 import {type AdapterUser} from "next-auth/adapters"
-import FacebookProvider from "next-auth/providers/facebook"
+import {Provider} from "next-auth/providers"
+import FacebookProvider,{type FacebookProfile} from "next-auth/providers/facebook"
 import Twitter from "next-auth/providers//twitter"
 import axios from 'axios';
+import { generateNonce, generateRandomness } from '@mysten/zklogin';
+import { Ed25519Keypair } from '@mysten/sui.js/keypairs/ed25519';
+import { getFullnodeUrl, SuiClient } from '@mysten/sui.js/client';
 import  type {
   GetServerSidePropsContext,
   NextApiRequest,
@@ -17,6 +22,16 @@ interface newSession extends Session{
 }
 interface NewAccount extends Account{
   error?:string
+}
+const getNonce = async () => {
+  const FULLNODE_URL = "https://fullnode.devnet.sui.io"; // replace with the RPC URL you want to use
+  const suiClient = new SuiClient({ url: FULLNODE_URL });
+  const { epoch, epochDurationMs, epochStartTimestampMs } = await suiClient.getLatestSuiSystemState();
+  const maxEpoch = Number(epoch) + 2; // this means the ephemeral key will be active for 2 epochs from now.
+  const ephemeralKeyPair = new Ed25519Keypair();
+  const randomness = generateRandomness();
+  const nonce = generateNonce(ephemeralKeyPair.getPublicKey(), maxEpoch, randomness);
+  return nonce;
 }
 
 
@@ -81,26 +96,71 @@ const callbacks = {
       return newSession;
   },
 }
+type UrlParams = Record<string, unknown>
+
+
+const defaultProviders = [
+  FacebookProvider({
+    clientId: process.env.FACEBOOK_ID!,
+    clientSecret: process.env.FACEBOOK_SECRET!,
+  }) as OAuthConfig<any>,
+  Twitter({
+    clientId: process.env.TWITTER_ID!,
+    clientSecret: process.env.TWITTER_SECRET!,
+    version: "2.0",
+  }) as OAuthConfig<any>,
+  // ...add more providers here
+]
 export const authOptions = {
   debug: true,
   // Configure one or more authentication providers
   secret:process.env.SECRET,
-  providers: [
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_ID!,
-      clientSecret: process.env.FACEBOOK_SECRET!,
-    }),
-    Twitter({
-      clientId: process.env.TWITTER_ID!,
-      clientSecret: process.env.TWITTER_SECRET!,
-      version: "2.0",
-    }),
-    // ...add more providers here
-  ],
+  providers: defaultProviders,
   callbacks
 }
 console.log(process.env.FACEBOOK_ID,process.env.FACEBOOK_SECRET)
 
+const defineProvider=function(nonce:string):OAuthConfig<any>[]{
+  return [
+    {
+      id: "facebook2",
+      name: "Facebook2",
+      type: "oauth",
+      authorization: {
+        url: "https://www.facebook.com/v17.0/dialog/oauth?scope=openid",
+        params: { nonce,response_type:"id_token" },
+      },
+      token: "https://graph.facebook.com/oauth/access_token",
+      userinfo: {
+        url: "https://graph.facebook.com/me",
+        // https://developers.facebook.com/docs/graph-api/reference/user/#fields
+        params: { fields: "id,name,email,picture" },
+        async request({ tokens, client, provider }:{tokens: {access_token?: string},client:any,provider: OAuthConfig<UrlParams>}) {
+          return await client.userinfo(tokens.access_token!, {
+            params: (provider.userinfo! as UserinfoEndpointHandler ).params,
+          })
+        },
+      },
+      profile(profile?: {id?:string,name?:string,email?:string,picture?:{data?:{url:string}}}) {
+        return {
+          id: profile?.id!,
+          name: profile?.name!,
+          email: profile?.email!,
+          image: profile?.picture?.data?.url!,
+        }
+      },
+      style: { logo: "/facebook.svg", bg: "#006aff", text: "#fff" },
+      options: {
+        clientId: process.env.FACEBOOK_ID!,
+        clientSecret: process.env.FACEBOOK_SECRET!,
+      },
+    }
+]
+}
 export default async function handler(req:NextApiRequest, res:NextApiResponse){
-  return NextAuth(req,res,authOptions)
+  const nonce = await getNonce();
+  return NextAuth(req,res,( (nonce)=>{
+    authOptions.providers=authOptions.providers.concat(defineProvider(nonce))
+    return authOptions
+  })(nonce))
 }

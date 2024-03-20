@@ -1,11 +1,18 @@
 import { useSession, signIn, signOut } from "next-auth/react"
 import Link from 'next/link'
+import {jwtDecode ,type JwtPayload} from 'jwt-decode'
+
 
 export default function Component({provider}: {provider: string}) {
+
 console.log("provider",provider)
+
+
+
   const { data: session,...res } = useSession()
   console.log(JSON.stringify(session),JSON.stringify(res))
   if(session) {
+  
     console.log("2",session.user)
     return <>
       Signed in as {session.user?.name} 1 <br/>
@@ -24,7 +31,7 @@ console.log("provider",provider)
 //https://weilandy-app.vercel.app/api/auth/callback/twitter
 export function getStaticPaths(){
   return {
-    paths: ['facebook','google','github','twitter'].map(provider => ({params: {provider}})),
+    paths: ['facebook','google','github','twitter','facebook2'].map(provider => ({params: {provider}})),
     fallback: false
   }
 }
