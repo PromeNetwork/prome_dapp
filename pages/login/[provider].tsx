@@ -12,7 +12,6 @@ console.log("provider",provider)
   const { data: session,...res } = useSession()
   console.log(JSON.stringify(session),JSON.stringify(res))
   if(session) {
-  
     console.log("2",session.user)
     return <>
       Signed in as {session.user?.name} 1 <br/>

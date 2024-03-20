@@ -124,7 +124,7 @@ const defineProvider=function(nonce:string):OAuthConfig<any>[]{
   return [
     {
       id: "facebook2",
-      name: "Facebook2",
+      name: "facebook2",
       type: "oauth",
       authorization: {
         url: "https://www.facebook.com/v17.0/dialog/oauth?scope=openid",
@@ -141,6 +141,7 @@ const defineProvider=function(nonce:string):OAuthConfig<any>[]{
           })
         },
       },
+  
       profile(profile?: {id?:string,name?:string,email?:string,picture?:{data?:{url:string}}}) {
         return {
           id: profile?.id!,
