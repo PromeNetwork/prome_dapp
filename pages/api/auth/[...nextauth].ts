@@ -100,10 +100,10 @@ type UrlParams = Record<string, unknown>
 
 
 const defaultProviders = [
-  FacebookProvider({
-    clientId: process.env.FACEBOOK_ID!,
-    clientSecret: process.env.FACEBOOK_SECRET!,
-  }) as OAuthConfig<any>,
+  // FacebookProvider({
+  //   clientId: process.env.FACEBOOK_ID!,
+  //   clientSecret: process.env.FACEBOOK_SECRET!,
+  // }) as OAuthConfig<any>,
   Twitter({
     clientId: process.env.TWITTER_ID!,
     clientSecret: process.env.TWITTER_SECRET!,
@@ -130,9 +130,9 @@ const defineProvider=function(nonce:string):OAuthConfig<any>[]{
         url: "https://www.facebook.com/v17.0/dialog/oauth?scope=openid",
         params: { nonce,response_type:"id_token" },
       },
-      token: "https://graph.facebook.com/oauth/access_token",
+      token: "https://www.facebook.com/v17.0/oauth/access_token",
       userinfo: {
-        url: "https://graph.facebook.com/me",
+        url: "https://www.facebook.com/v17.0/me",
         // https://developers.facebook.com/docs/graph-api/reference/user/#fields
         params: { fields: "id,name,email,picture" },
         async request({ tokens, client, provider }:{tokens: {access_token?: string},client:any,provider: OAuthConfig<UrlParams>}) {
