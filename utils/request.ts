@@ -21,7 +21,7 @@ service.interceptors.response.use(async res => {
     const code = res.data.code;
     // const msg = errorCode[code] || res.data.msg || errorCode['default']
     const msg = "Network Error"
-    if (res.status === 200) {
+    if (res.status === 200||res.status===201) {
       if (code != null && code !== 0) {
         if (code === 401) {
           const originalRequest = res.config;

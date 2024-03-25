@@ -22,7 +22,8 @@
       "@content/*": ["content/*"],
       "@utils/*": ["utils/*"],
       "@api/*":["service/*"],
-      "@hooks/*":["hooks/*"]
+      "@hooks/*":["hooks/*"],
+      "@images/*":["images/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

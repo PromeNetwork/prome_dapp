@@ -1,0 +1,225 @@
+
+.stage {
+    overflow: hidden;
+    background-color: black;
+    -webkit-filter: blur(3.2px) brightness(1.4) contrast(15);
+    filter: blur(3.2px) brightness(1.4) contrast(15);
+}
+.stage::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    background: black;
+    border-radius: 50%;
+  box-shadow: 0 0 10px #330a0a, 0 0 20px #95d90a, 0 0 40px #243124, 0 0 70px black, 0 0 100px #6f10da, 0 0 140px #0f10e1, 0 0 180px #d49f9f, 0 0 230px #262b2d;
+}
+.diamondLines {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.diamondLines::before,
+.diamondLines::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    display: block;
+    width: 100%;
+    height: 0;
+    border: 1px solid #fff;
+    box-shadow: 0 0 2px #45c0ff, 0 0 5px #45c0ff;
+    -moz-animation-name: glow;
+    -webkit-animation-name: glow;
+    animation-name: glow;
+    -moz-animation-timing-function: linear;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+}
+.diamondLines::after {
+    top: 0;
+    left: 50%;
+    height: 100%;
+    width: 0;
+}
+.diamondLines div {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1000px;
+    height: 500px;
+    border: 6px solid #fff;
+    -moz-transform: translateX(-50%) translateY(-50%) rotate(90deg) skew(75deg);
+    -ms-transform: translateX(-50%) translateY(-50%) rotate(90deg) skew(75deg);
+    -webkit-transform: translateX(-50%) translateY(-50%) rotate(90deg) skew(75deg);
+    transform: translateX(-50%) translateY(-50%) rotate(90deg) skew(75deg);
+    -moz-animation-duration: 20s;
+    -webkit-animation-duration: 20s;
+    animation-duration: 20s;
+    -moz-animation-name: move;
+    -webkit-animation-name: move;
+    animation-name: move;
+    -moz-animation-timing-function: cubic-bezier(0.06, 0.22, 0.19, 0.99);
+    -webkit-animation-timing-function: cubic-bezier(0.06, 0.22, 0.19, 0.99);
+    animation-timing-function: cubic-bezier(0.06, 0.22, 0.19, 0.99);
+    -moz-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    box-shadow: 0 0 5px #45c0ff, 0 0 15px #45c0ff;
+    filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
+    opacity: 0;
+}
+.diamondLines div:nth-child(1) {
+    -moz-animation-delay: 2s;
+    -webkit-animation-delay: 2s;
+    animation-delay: 2s;
+}
+.diamondLines div:nth-child(2) {
+    -moz-animation-delay: 4s;
+    -webkit-animation-delay: 4s;
+    animation-delay: 4s;
+}
+.diamondLines div:nth-child(3) {
+    -moz-animation-delay: 6s;
+    -webkit-animation-delay: 6s;
+    animation-delay: 6s;
+}
+.diamondLines div:nth-child(4) {
+    -moz-animation-delay: 8s;
+    -webkit-animation-delay: 8s;
+    animation-delay: 8s;
+}
+.diamondLines div:nth-child(5) {
+    -moz-animation-delay: 10s;
+    -webkit-animation-delay: 10s;
+    animation-delay: 10s;
+}
+.diamondLines div:nth-child(6) {
+    -moz-animation-delay: 12s;
+    -webkit-animation-delay: 12s;
+    animation-delay: 12s;
+}
+.diamondLines div:nth-child(7) {
+    -moz-animation-delay: 14s;
+    -webkit-animation-delay: 14s;
+    animation-delay: 14s;
+}
+.diamondLines div:nth-child(8) {
+    -moz-animation-delay: 16s;
+    -webkit-animation-delay: 16s;
+    animation-delay: 16s;
+}
+.diamondLines div:nth-child(9) {
+    -moz-animation-delay: 18s;
+    -webkit-animation-delay: 18s;
+    animation-delay: 18s;
+}
+.diamondLines div:nth-child(10) {
+    -moz-animation-delay: 20s;
+    -webkit-animation-delay: 20s;
+    animation-delay: 20s;
+}
+@-moz-keyframes move {
+    0% {
+        width: 1000px;
+        height: 1000px;
+        opacity: 0;
+        -moz-transform: translateX(-50%) translateY(-50%) rotate(0deg) skew(70deg);
+        transform: translateX(-50%) translateY(-50%) rotate(0deg) skew(70deg);
+    }
+    15% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 1;
+    }
+    100% {
+        width: 0;
+        height: 0;
+        border-width: 1px;
+        opacity: 0;
+        -moz-transform: translateX(-50%) translateY(-50%) rotate(270deg) skew(10deg);
+        transform: translateX(-50%) translateY(-50%) rotate(270deg) skew(10deg);
+    }
+}
+@-webkit-keyframes move {
+    0% {
+        width: 1000px;
+        height: 1000px;
+        opacity: 0;
+        -webkit-transform: translateX(-50%) translateY(-50%) rotate(0deg) skew(70deg);
+        transform: translateX(-50%) translateY(-50%) rotate(0deg) skew(70deg);
+    }
+    15% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 1;
+    }
+    100% {
+        width: 0;
+        height: 0;
+        border-width: 1px;
+        opacity: 0;
+        -webkit-transform: translateX(-50%) translateY(-50%) rotate(270deg) skew(10deg);
+        transform: translateX(-50%) translateY(-50%) rotate(270deg) skew(10deg);
+    }
+}
+@keyframes move {
+    0% {
+        width: 1000px;
+        height: 1000px;
+        opacity: 0;
+        -moz-transform: translateX(-50%) translateY(-50%) rotate(0deg) skew(70deg);
+        -ms-transform: translateX(-50%) translateY(-50%) rotate(0deg) skew(70deg);
+        -webkit-transform: translateX(-50%) translateY(-50%) rotate(0deg) skew(70deg);
+        transform: translateX(-50%) translateY(-50%) rotate(0deg) skew(70deg);
+    }
+    15% {
+        opacity: 1;
+    }
+    40% {
+        opacity: 1;
+    }
+    100% {
+        width: 0;
+        height: 0;
+        border-width: 1px;
+        opacity: 0;
+        -moz-transform: translateX(-50%) translateY(-50%) rotate(270deg) skew(10deg);
+        -ms-transform: translateX(-50%) translateY(-50%) rotate(270deg) skew(10deg);
+        -webkit-transform: translateX(-50%) translateY(-50%) rotate(270deg) skew(10deg);
+        transform: translateX(-50%) translateY(-50%) rotate(270deg) skew(10deg);
+    }
+}
+@-moz-keyframes glow {
+    0% {
+        border-width: 1px;
+    }
+    100% {
+        border-width: 5px;
+    }
+}
+@-webkit-keyframes glow {
+    0% {
+        border-width: 1px;
+    }
+    100% {
+        border-width: 5px;
+    }
+}
+@keyframes glow {
+    0% {
+        border-width: 1px;
+    }
+    100% {
+        border-width: 5px;
+    }
+}

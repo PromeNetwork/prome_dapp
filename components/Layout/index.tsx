@@ -14,12 +14,12 @@ import { config} from '@components/provider'
 import{ setLoginResult } from '@utils/storageUtils'
 
 
-const navigation = [
-  { name: 'Product', href: 'product' },
-  { name: 'Features', href: 'features' },
-  { name: 'Marketplace', href: 'marketplace' },
-  { name: 'About', href: 'about' },
-]
+// const navigation = [
+//   // { name: 'Product', href: 'product' },
+//   // { name: 'Features', href: 'features' },
+//   // { name: 'Marketplace', href: 'marketplace' },
+//   // { name: 'About', href: 'about' },
+// ]
 
 interface Props {
   children: ReactNode;
@@ -71,75 +71,16 @@ export default function Layout(props: Props) {
   
 
 
-  // const renderLabel = () => {
-  //   if (accountData?.ens) {
-  //     return (
-  //       <>
-  //         <div className="relative w-8 h-8 mr-2">
-  //           {accountData.ens.avatar ? (
-  //             <Image
-  //               src={accountData?.ens.avatar}
-  //               alt="ENS Avatar"
-  //               layout="fill"
-  //               objectFit="cover"
-  //               className="rounded-full"
-  //             />
-  //           ) : (
-  //             <Image
-  //               src="/images/black-gradient.png"
-  //               alt="ENS Avatar"
-  //               layout="fill"
-  //               objectFit="cover"
-  //               className="rounded-full"
-  //             />
-  //           )}
-  //         </div>
-  //         <span className="truncate max-w-[100px]">
-  //           {accountData.ens?.name}
-  //         </span>
-  //       </>
-  //     );
-  //   }
-
-  //   return (
-  //     <span className="truncate max-w-[150px]">{accountData?.address}</span>
-  //   );
-  // };
-
-  // const renderButton = () => {
-  //   if (accountData) {
-  //     return (
-  //       <MenuDropdown
-  //         label={renderLabel()}
-  //         options={[{ label: "Disconnect", onClick: disconnect }]}
-  //       />
-  //     );
-  //   }
-
-  //   return (
-  //     <Button
-  //       loading={loading || showWalletOptions}
-  //       onClick={() => setShowWalletOptions(true)}
-  //     >
-  //       Connect
-  //     </Button>
-  //   );
-  // };
-
 
 
   return (
     <div>
-    <header className="absolute inset-x-0 top-0 z-50">
-        <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+    <header className=" inset-x-0 top-0 z-50 bg-header">
+        <nav className="flex items-center justify-between p-3 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
             <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt=""
-              />
+              <span className="sr-only">prome</span>
+              <p className=" font-pix  text-bd text-font">prome</p>
             </a>
           </div>
           <div className="flex lg:hidden">
@@ -153,17 +94,18 @@ export default function Layout(props: Props) {
             </button>
           </div>
           <div className="hidden lg:flex lg:gap-x-12">
-            {navigation.map((item) => (
+            <p className=" font-pix  text-bd text-font">P</p>
+            {/* {navigation.map((item) => (
               <ActiveLink key={item.name} href={item.href} activeLinkClass={'text-indigo-600'} >
                 <div
                   className="font-medium mr-8 text-gray-500 hover:text-gray-900">
                  {item.name}
                 </div>
               </ActiveLink>
-            ))}
+            ))} */}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-           <div  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+           <div  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-90">
                    <Connect/>
                   </div>
           </div>
@@ -192,7 +134,7 @@ export default function Layout(props: Props) {
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-2 py-6">
-                  {navigation.map((item) => (
+                  {/* {navigation.map((item) => (
                     <a
                       key={item.name}
                       href={item.href}
@@ -200,7 +142,7 @@ export default function Layout(props: Props) {
                     >
                       {item.name}
                     </a>
-                  ))}
+                  ))} */}
                 </div>
                 <div className="py-6">
                   {/* <div  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
@@ -232,10 +174,11 @@ export default function Layout(props: Props) {
         </div>
       </div> */}
           <div className="bg-white">
-      <div className="relative isolate px-6 pt-[7rem] lg:px-8">
+      {/* <div className="relative isolate  pt-[4rem] "> */}
       {children}
-      </div>
+      {/* </div> */}
       </div>
     </div>
   );
 }
+

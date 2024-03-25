@@ -30,7 +30,7 @@ console.log("provider",provider)
 //https://weilandy-app.vercel.app/api/auth/callback/twitter
 export function getStaticPaths(){
   return {
-    paths: ['facebook','google','github','twitter','facebook2'].map(provider => ({params: {provider}})),
+    paths: ['facebook','twitter'].map(provider => ({params: {provider}})),
     fallback: false
   }
 }

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useContext, useEffect } from "react";
 import { useConnect, useAccount,type UseConnectParameters } from "wagmi";
-import { Button } from "@components/index";
+import { Button } from "@material-tailwind/react/components/Button";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { config } from "@components/provider";
 
@@ -37,7 +37,6 @@ export default function WalletOptionsModal(props: Props) {
               <div key={c.id} className="mb-2 ml-2 mr-2 w-80">
                 <Button
                   loading={false}
-                  width={80}
                   disabled={!c.getChainId}
                   onClick={() => {}}
                 >
