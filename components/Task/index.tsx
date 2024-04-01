@@ -18,16 +18,40 @@ import {useAccount} from "wagmi";
 import { toast } from 'react-hot-toast';
 import { useTaskQuery ,type Task,type  TaskType } from "@hooks/index";
 import { recoverMessageAddress } from 'viem'
-
+import { useWallet } from "@solana/wallet-adapter-react";
+import { User} from '@api/index'
+import {autoSignIn,CountdownButton } from '@components/index'
+import { useUserContext } from "../index";
 type LoadingType = {
     [k in TaskType]:boolean
 }
-function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typeof useAccount>,setProgress:(process:number)=>void}) {
+function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string},setProgress:(process:number)=>void}) {
     const [email, setEmail] = useState("");
     const [Coupons, setCoupons] = useState(['weqweqweqwewqeqwe','qeqweqweqweqwe'])
     const [code, setCode] = useState("");
     const { countries } = useCountries();
     const { account,step } = props;
+    const { user , loginWallet }=useUserContext();
+
+
+    const taskStatus:{
+      [k in TaskType]?:'complete'|'incomplete'
+    }={
+        FOLLOW_TWITTER:'incomplete',
+        INTERACT_TWITTER:'incomplete',
+        JOIN_TELEGRAM:'incomplete',
+        LOGIN_WALLET:'incomplete',
+        VERIFY_EMAIL:'incomplete',
+        QUESTION:'incomplete',
+        SHARE:'incomplete',
+        LIKE_TWEETER:'incomplete'
+
+    }
+    props.task?.forEach((task)=>{
+        taskStatus[task.type]=task.status
+    })
+
+   
     /**
      * 
      */
@@ -38,6 +62,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
         LOGIN_WALLET:false,
         VERIFY_EMAIL:false,
         QUESTION:false,
+        LIKE_TWEETER:false,
         SHARE:false
     })
    
@@ -52,34 +77,8 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
         }
         return true
       }
-      const connectWallet=async ()=>{
-        try{
-        if (!onVerifyBefore()) {
-          return;
-        }
-        const message = `Login weiland account center ${account?.address?.toLocaleLowerCase()}`;
-       const signResult = await signMessage(config,{message})
-         if(!signResult){
-            toast.error('Failed to sign message')
-            return;
-            }
-            debugger
-           const recoverAddress= await recoverMessageAddress({
-                message,
-                signature:signResult,
-                })
-            if(recoverAddress.toLowerCase()!==account?.address!.toLowerCase()){
-                toast.error('Failed to recover message')
-                return;
-            }
-       const loginResult=await api.login.userLogin(account?.address, signResult);
-            //           console.log("loginResult",loginResult);
-        toast.success('Successfully connected wallet');
-        props.setProgress(1)
-    }catch(e){
-        console.log("error",e);
-        toast.error('Failed to connect wallet')
-      }
+      const connectWallet=async ()=>{ 
+           await loginWallet()
         }
 
       const verifyTwitter = () => {
@@ -101,21 +100,21 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
           <div className="text-white/[0.8] text-[1.313rem] mb-8">Tasks</div>
           <div className="h-3 w-full rounded-2xl  bg-[#595959]">
             <div
-              className="h-1 h-full rounded-2xl bg-connect"
-              style={{ width: (step / 7) * 100 + "%" }}
+              className="h-3 h-full rounded-2xl bg-connect"
+              style={{ width: (step / 6) * 100 + "%" }}
             ></div>
           </div>
           <div className="mt-4 ">
             <p className="text-xs text-white/[0.8]">
-              {step}/7 task(s) complete
+              {step}/6 task(s) complete
             </p>
           </div>
         </div>
         <div className="bg-card px-8 py-10 mt-5">
           <TaskCard
             task={{
-              status: "incomplete",
-              title: "Follow PROME Network on Twitter",
+              status: taskStatus['FOLLOW_TWITTER']!,
+              title: <p>Follow <a href='' target='_bank' className="border-b ">PROME Network</a>  on Twitter</p>,
               icon: { src: UnTwitter, isSelect: true },
             }}
           >
@@ -127,7 +126,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
           </TaskCard>
           <TaskCard
             task={{
-              status: "incomplete",
+              status: taskStatus['INTERACT_TWITTER']=="complete"&&taskStatus['LIKE_TWEETER']=="complete"?'complete':'incomplete',
               title: "Interact with the following tweets on Twitter",
               icon: { src: UnTwitter, isSelect: true },
             }}
@@ -135,7 +134,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
             <div className="block bg-card  border-b border-font">
               <div className="py-6">
                 <p className="text-xs text-connect mb-2">
-                  01. Retweet @Prome_Network on Twitter
+                01. Retweet @Prome_Network on Twitter
                 </p>
                 <Button
                   autoCapitalize="true"
@@ -148,9 +147,8 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
                     className="w-6 h-6"
                   >
                     <path
-                      fill-rule="evenodd"
                       d="M15.75 2.25H21a.75.75 0 0 1 .75.75v5.25a.75.75 0 0 1-1.5 0V4.81L8.03 17.03a.75.75 0 0 1-1.06-1.06L19.19 3.75h-3.44a.75.75 0 0 1 0-1.5Zm-10.5 4.5a1.5 1.5 0 0 0-1.5 1.5v10.5a1.5 1.5 0 0 0 1.5 1.5h10.5a1.5 1.5 0 0 0 1.5-1.5V10.5a.75.75 0 0 1 1.5 0v8.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V8.25a3 3 0 0 1 3-3h8.25a.75.75 0 0 1 0 1.5H5.25Z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     />
                   </svg>
   
@@ -162,7 +160,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
             <div className="block bg-card">
               <div className="py-6">
                 <p className="text-xs text-connect mb-2">
-                  01. Retweet @Prome_Network on Twitter
+                02. Like  @Prome_Network on Twitter
                 </p>
                 <Button
                   autoCapitalize="true"
@@ -175,19 +173,18 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
                     className="w-6 h-6"
                   >
                     <path
-                      fill-rule="evenodd"
                       d="M15.75 2.25H21a.75.75 0 0 1 .75.75v5.25a.75.75 0 0 1-1.5 0V4.81L8.03 17.03a.75.75 0 0 1-1.06-1.06L19.19 3.75h-3.44a.75.75 0 0 1 0-1.5Zm-10.5 4.5a1.5 1.5 0 0 0-1.5 1.5v10.5a1.5 1.5 0 0 0 1.5 1.5h10.5a1.5 1.5 0 0 0 1.5-1.5V10.5a.75.75 0 0 1 1.5 0v8.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V8.25a3 3 0 0 1 3-3h8.25a.75.75 0 0 1 0 1.5H5.25Z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     />
                   </svg>
   
-                  <p>Retweet the tweet</p>
+                  <p>Like the tweet</p>
                 </Button>
               </div>
               <div></div>
             </div>
           </TaskCard>
-          <TaskCard
+          {/* <TaskCard
             task={{
               status: "incomplete",
               title: "Join PROME Network on Telegram",
@@ -199,10 +196,10 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
                 Verify
               </Button>
             </div>
-          </TaskCard>
+          </TaskCard> */}
           <TaskCard
             task={{
-              status: "incomplete",
+              status: taskStatus['LOGIN_WALLET']!,
               title: "Connect Wallet and interact with PROME DApp",
               icon: { src: UnConnect, isSelect: true },
             }}
@@ -215,7 +212,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
           </TaskCard>
           <TaskCard
             task={{
-              status: "incomplete",
+              status: taskStatus['VERIFY_EMAIL']!,
               title: "Verify your email",
               icon: { src: UnEmail, isSelect: true },
             }}
@@ -244,21 +241,14 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
                       onChange={onCodeChange}
                     />
                   </div>
-                  <Button
-                    size="sm"
-                    color={email ? "gray" : "blue-gray"}
-                    disabled={!email}
-                    className="text-nowrap  ml-1 rounded-full bg-connect text-btn/[0.8] text-xs  w-3/12  cursor-pointer"
-                  >
-                    Send Code
-                  </Button>
+                  <CountdownButton/>
                 </div>
               </div>
             </div>
           </TaskCard>
           <TaskCard
             task={{
-              status: "incomplete",
+              status: taskStatus['QUESTION']!,
               title: "Q&A",
               icon: { src: UnQuestion, isSelect: true },
             }}
@@ -316,7 +306,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
                       and model of the photovoltaic equipment.
                     </p>
                     <Input
-                    crossOrigin={true}
+                    crossOrigin={"true"}
                       label="Enter"
                       type="text"
                       placeholder="Brand and Model"
@@ -327,7 +317,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
                     <p className="text-sm text-white mt-4 mb-3">
                       04. Your daily household electricity consumption
                     </p>
-                    <Input crossOrigin={true} label="consumption" icon={<span>KW</span>} />
+                    <Input crossOrigin={"true"} label="consumption" icon={<span>KW</span>} />
                   </div>
                   <Button className="rounded-3xl  bg-connect text-btn/[0.8] text-xs mt-8 px-6">
                     Submit
@@ -339,7 +329,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
           </TaskCard>
           <TaskCard
             task={{
-              status: "incomplete",
+              status: taskStatus['SHARE']!,
               title: "Share this airdrop with your friend",
               icon: { src: UnShare, isSelect: true },
             }}
@@ -357,6 +347,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?: ReturnType<typ
                   crossOrigin={"true"}
                     label="consumption"
                     className="rounded-full"
+                    value={user?`http://localhost:3000?code=${user?.code}`:"http://localhost:3000"}
                     icon={<DocumentDuplicateIcon />}
                   />
                 </div>
@@ -407,10 +398,10 @@ export default function Task() {
   const [Coupons, setCoupons] = useState(['weqweqweqwewqeqwe','qeqweqweqweqwe'])
   const [code, setCode] = useState("");
   const { countries } = useCountries();
-  const account = useAccount();
+  const account = useWallet();
   const [progress, setProgress] = useState(0)
 
-  const {isPending, error, data } = useTaskQuery(account.address, progress)
+  const {isPending, error, data } = useTaskQuery(account.publicKey?.toBase58(), progress)
     if (isPending) {
         return <div>Loading...</div>
     }
@@ -418,6 +409,7 @@ export default function Task() {
         return <div>Error</div>
     }
     let currentProcess=0
+    console.log(data)
     if(data){
         data.forEach((task)=>{
             if(task.status==='complete'){
@@ -426,7 +418,7 @@ export default function Task() {
         })
     }
   return (
-    <TaskInner task={data} account={account} step={currentProcess}  setProgress={(add)=>setProgress(currentProcess + add)}/>
+    <TaskInner task={data} account={{address: account.publicKey?.toBase58()}} step={currentProcess}  setProgress={(add)=>setProgress(currentProcess + add)}/>
   );
 }
 

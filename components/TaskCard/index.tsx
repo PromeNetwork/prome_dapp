@@ -13,7 +13,7 @@ import {
   } from "@material-tailwind/react";
 export type Task = { 
     status: 'complete' | 'incomplete'
-    title: string
+    title: string|ReactNode
     icon: {src: StaticImageData ,isSelect:boolean}
 
 }

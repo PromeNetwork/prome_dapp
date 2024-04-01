@@ -17,3 +17,11 @@ export {default as TaskCard} from './TaskCard'
 export {default as Icon} from './Icon'
 export {default as CouponList} from './CouponList'
 export {default as Footer} from './Footer'
+export {default as Detail} from './Detail'
+
+export {ContextProvider , autoSignIn, saveToken, getToken}  from './ContextProvider'
+
+export {useAutoConnect} from './AutoConnectProvider'
+
+export{ ConnectProvider,useUserContext } from './ConnectProvider'
+export { CountdownButton } from './CountdownButton'

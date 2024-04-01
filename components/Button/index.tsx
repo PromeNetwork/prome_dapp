@@ -8,6 +8,7 @@ import { Dialog,
 } from "@material-tailwind/react";
 import {Button } from "@material-tailwind/react/components/Button";
 import { toast } from 'react-hot-toast';
+import {processStringLength} from "@utils/process";
 interface Props {
   children?: string | JSX.Element;
   width?: number;
@@ -41,8 +42,7 @@ interface Props {
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                     d="M1 2C1 1.46957 1.21071 0.960859 1.58579 0.585786C1.96086 0.210714 2.46957 0 3 0H11C11.5304 0 12.0391 0.210714 12.4142 0.585786C12.7893 0.960859 13 1.46957 13 2V14C13.2652 14 13.5196 14.1054 13.7071 14.2929C13.8946 14.4804 14 14.7348 14 15C14 15.2652 13.8946 15.5196 13.7071 15.7071C13.5196 15.8946 13.2652 16 13 16H10C9.73478 16 9.48043 15.8946 9.29289 15.7071C9.10536 15.5196 9 15.2652 9 15V13C9 12.7348 8.89464 12.4804 8.70711 12.2929C8.51957 12.1054 8.26522 12 8 12H6C5.73478 12 5.48043 12.1054 5.29289 12.2929C5.10536 12.4804 5 12.7348 5 13V15C5 15.2652 4.89464 15.5196 4.70711 15.7071C4.51957 15.8946 4.26522 16 4 16H1C0.734784 16 0.48043 15.8946 0.292893 15.7071C0.105357 15.5196 0 15.2652 0 15C0 14.7348 0.105357 14.4804 0.292893 14.2929C0.48043 14.1054 0.734784 14 1 14V2ZM4 3H6V5H4V3ZM6 7H4V9H6V7ZM8 3H10V5H8V3ZM10 7H8V9H10V7Z"
                     fill="#90A4AE"
                   />
@@ -99,17 +99,17 @@ interface Props {
  * @returns 
  */
 export default function WalletBtn(props: Props) {
-  const { chain, account, disconnected, width, loading, ...rest } = props;
-  console.log("chain", chain);
+  const {  account, disconnected, loading, ...rest } = props;
   const copyAddress = () => {
     navigator.clipboard.writeText(account.address);
     toast.success('Copied to clipboard');
   }
+  const width=20
   const renderBtn = () => {
-    return (<div className="flex flex-row"><img src={chain.iconUrl} alt={chain.name} className="w-5 h-5" /><span className="ml-6">{account.displayName}</span></div>)
+    return (<div className="flex flex-row"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAjVBMVEVHcExneuFzaugj5rKJT/UyzMBBtMpYlNaRSfse8KhQnNNKpdB1Z+ldiNyJT/VIucU0ycJVktcZ+Z6XRf8m4bdanNdFrswp27tigd5Yj9hGq82LTvaVR/1Qm9Mg7KxKpdBtcuQl5LVkfeBFrsxdiNyDVPI/uMh7X+0b9qEp3LtVktc5wcV0aOkzysEu0r6VnneeAAAAG3RSTlMAt3e9vG+6DHNwvL67vU8Xvbrc2kcrnb3YyNWr1DRIAAAA1klEQVQokZ3R2RKCMAxAUUFBARFccEVANtnk/z/PNKkUkaEz3tczgaadzaRpmKEZ36Fdk7x+vdryAQVQQe2YWWECWoOWXIPOtvf7UIuAm5JWoGGS5x+lTzNT43RUHRxUFNvemqZl6bruuu7pNGc58hWnW45GlmXPponiOK2q/kp0O16n34fWUDegzyaKhNLsgfQ21HxK2Tu0bemhrj6Kx+IKw/J1/s9ZUGuo/w74R9+/seg6xKGPDME67a2EtvcxYrGSOTSYzbheeiZm6R3OdDs/qSz5im/DuDfiWB5adgAAAABJRU5ErkJggg==" alt="solalan" className="w-5 h-5" /><span className="ml-6">{processStringLength(account.address)}</span></div>)
   }
   return (
-    <>{!loading && chain && account ? <Popover placement="bottom-start">
+    <>{!loading && account ? <Popover placement="bottom-start">
       <PopoverHandler>
         <Button className={`flex items-center justify-center py-2  font-semibold border-solid border border-connect hover:bg-black rounded-3xl ${width && `w-${width}`} ${loading && "cursor-not-allowed opacity-50"}`}>{renderBtn()}</Button>
       </PopoverHandler>

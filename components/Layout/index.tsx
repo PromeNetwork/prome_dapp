@@ -22,16 +22,13 @@ import{ setLoginResult } from '@utils/storageUtils'
 // ]
 
 interface Props {
-  children: ReactNode;
-  showWalletOptions: boolean;
-  setShowWalletOptions: (showWalletOptions: boolean) => void;
+  children?: ReactNode;
 }
 
 export default function Layout(props: Props) {
-  const { children,showWalletOptions,setShowWalletOptions} = props;
+  const { children} = props;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const accountData = useAccount();
-  const [login, setLogin]=useAtom(loginAtom)
+
 
 
   // useAccountEffect({

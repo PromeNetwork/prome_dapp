@@ -5,7 +5,7 @@ import {getCurrentAccessToken, getCurrentAddress} from "@utils/storageUtils";
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 
 const service = axios.create({
-  baseURL: 'http://127.0.0.1:3000',
+  baseURL: 'http://127.0.0.1:3002',
   timeout: 60000
 })
 
@@ -16,6 +16,7 @@ service.interceptors.request.use(config => {
 }, error => {
   console.log(error)
 })
+
 
 service.interceptors.response.use(async res => {
     const code = res.data.code;
@@ -44,17 +45,22 @@ service.interceptors.response.use(async res => {
           } else if (res.data.hasOwnProperty('rows')) {
             return Promise.resolve(res.data)
           } else {
-            return Promise.reject(new Error(msg))
+            return Promise.resolve(res.data)
           }
         }
 
       }
     } else {
+      debugger
       return Promise.reject(new Error(msg))
     }
   },
-  error => {
+  async function (error) {
+    // 如果发生了错误，判断是否是401
+    console.dir(error)
     return Promise.reject(error)
   }
+  
+ 
 )
 export default service

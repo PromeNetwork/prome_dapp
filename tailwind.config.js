@@ -23,6 +23,7 @@ module.exports =withMT({
       'btn':'##252A1E',
       'card':'#303030',
       'line':'#595959',
+      'layer':'#454545',
     },
     screens: {
       sm: '480px',

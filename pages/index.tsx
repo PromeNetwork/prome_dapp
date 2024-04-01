@@ -1,6 +1,7 @@
 
 import {ProductDescribe ,Shape,Task ,Event, Footer}from '../components/index';
-
+import Image from 'next/image';
+import  Enenge from '@images/enenge.png';
 export default function Home() {
 
   return (
@@ -8,7 +9,7 @@ export default function Home() {
         <div className="bg-gradient-to-b pl-32 from-[#2A2F32] to-[#1E1F20]">
         <div className="mx-auto  flex flex-row py-8">
           <ProductDescribe/>
-          <Shape/>
+          <Image src={Enenge}  alt="energy" className="bg-transparent h-[33.75rem] aspect-auto" />
           {/* <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
               Announcing our next round of funding.{' '}
