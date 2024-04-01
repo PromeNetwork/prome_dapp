@@ -111,14 +111,14 @@ export const ContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
             // <SnackbarProvider>
             
                     <AutoConnectProvider  >
-                    <Profiler id="YourComponent" onRender={(id, phase, actualDuration) => {
+                    {/* <Profiler id="YourComponent" onRender={(id, phase, actualDuration) => {
   console.log(`${id}渲染所花费的时间为 phase: ${phase} ：${actualDuration}毫秒`);
-}}>
+}}> */}
 
                         <WalletContextProvider>
                             {children}
                             </WalletContextProvider>
-                            </Profiler>
+                            {/* </Profiler> */}
                     </AutoConnectProvider>
                 // </SnackbarProvider>
     );
@@ -139,7 +139,7 @@ export const getToken =  async (publicKey:string) => {
 export const autoSignIn = async (adapter: Adapter) => {
     if (!('signIn' in adapter)) return true;
 
-    debugger
+    
    const address= adapter.publicKey ? adapter.publicKey.toBase58():null;
    if(address==null) return false;
    const token = await getToken(address)

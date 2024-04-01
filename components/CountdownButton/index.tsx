@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import { Button } from '@material-tailwind/react';
 
-export function CountdownButton() {
+export function CountdownButton({email}:{email: string|undefined}) {
     const [countdown, setCountdown] = useState(0);
     const [disabled, setDisabled] = useState(false);
 
+    const validateEmail = (email: string|undefined) => {
+        if(!email) return false
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
     const startCountdown = () => {
         setDisabled(true); // 禁用按钮
-        setCountdown(10); // 设置倒计时秒数
+        setCountdown(60); // 设置倒计时秒数
 
         const interval = setInterval(() => {
             setCountdown(prevCountdown => prevCountdown - 1); // 更新倒计时秒数
@@ -23,10 +29,11 @@ export function CountdownButton() {
     return (
         <>
              <Button
+             onClick={startCountdown}
     size="sm"
     color={disabled ? "gray" : "blue-gray"}
-    disabled={disabled}
-    className="text-nowrap  ml-1 rounded-full bg-connect text-btn/[0.8] text-xs    cursor-pointer"
+    disabled={disabled||!validateEmail(email) }
+    className="text-nowrap   ml-1 rounded-full bg-connect text-btn/[0.8] text-xs    cursor-pointer"
   >
     {disabled ? `${countdown} 秒后重新获取` : '获取验证码'}
   </Button>

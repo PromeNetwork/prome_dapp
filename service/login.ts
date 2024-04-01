@@ -2,7 +2,7 @@ import useSWR from "swr"
 import { useEffect } from "react"
 import {AxiosInstance} from 'axios'
 import { getToken } from "@components/index"
-import { User } from "./dto"
+import { User,Question } from "./dto"
 
 export const refreshToken=(service:AxiosInstance)=>(token:string)=>{
     const swrRes=useSWR('/member/auth/refresh-token',
@@ -26,8 +26,7 @@ export const userLogin=(service:AxiosInstance)=>async (address:string, signResul
 }
 
 
-export const useInfo=(service:AxiosInstance)=>async (address:string):Promise<User|null>=>{
-
+export const userInfo=(service:AxiosInstance)=>async (address:string):Promise<User|null>=>{
 
 
     try{
@@ -40,4 +39,23 @@ export const useInfo=(service:AxiosInstance)=>async (address:string):Promise<Use
      console.log(err)
     }
     return null;
+}
+
+export const submitEmail=(service:AxiosInstance)=>async (user:Omit<User,'uid'>):Promise<void>=>{
+    return  await service({
+        url:'/account/email',
+        method:'post',
+        headers: {'Authorization': 'Bearer ' +  await getToken(user.address)},
+        data:{...user}
+    })
+}
+
+
+export const submitQuestionnaire=(service:AxiosInstance)=>async (question:Omit<User,'uid'|'code'>&{question:Question}):Promise<void>=>{
+    return  await service({
+        url:'/account/questionnaire',
+        method:'post',
+        headers: {'Authorization': 'Bearer ' +  await getToken(question.address)},
+        data:{...question}
+    })
 }

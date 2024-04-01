@@ -11,7 +11,7 @@ import * as api from "@api/index";
 import { Button, Input, Select, Option } from "@material-tailwind/react";
 import { useCountries } from "use-react-countries";
 import { signMessage } from '@wagmi/core'
-import { useState, cloneElement, useEffect } from "react";
+import { useState, cloneElement, useEffect, useCallback, FormEventHandler, FormEvent, HTMLInputElement } from "react";
 import { config} from '@components/provider'
 import { DocumentDuplicateIcon } from "@heroicons/react/20/solid";
 import {useAccount} from "wagmi";
@@ -19,21 +19,27 @@ import { toast } from 'react-hot-toast';
 import { useTaskQuery ,type Task,type  TaskType } from "@hooks/index";
 import { recoverMessageAddress } from 'viem'
 import { useWallet } from "@solana/wallet-adapter-react";
-import { User} from '@api/index'
+import { User, Question} from '@api/index'
 import {autoSignIn,CountdownButton } from '@components/index'
 import { useUserContext } from "../index";
+import {useCouponQuery} from '@hooks/index'
 type LoadingType = {
     [k in TaskType]:boolean
 }
 function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string},setProgress:(process:number)=>void}) {
     const [email, setEmail] = useState("");
-    const [Coupons, setCoupons] = useState(['weqweqweqwewqeqwe','qeqweqweqweqwe'])
     const [code, setCode] = useState("");
     const { countries } = useCountries();
+    const [questionnaire, setQuestionnaire] = useState<Question>({
+        country: "",
+        equipment: "",
+        brand: "",
+        consumption: "",
+    });
     const { account,step } = props;
     const { user , loginWallet }=useUserContext();
 
-
+ 
     const taskStatus:{
       [k in TaskType]?:'complete'|'incomplete'
     }={
@@ -47,11 +53,69 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
         LIKE_TWEETER:'incomplete'
 
     }
+    //*****************************questionnaire */
+
+    const selectEquip = useCallback((value?: string) => {
+      console.log(value);
+        setQuestionnaire({ ...questionnaire, equipment: value });
+      },[questionnaire])
+
+    const onCountryChange = useCallback((value?: string) => {
+      console.log(value);
+        setQuestionnaire({ ...questionnaire, country: value });
+      },[questionnaire])
+      const onBrandChange = useCallback((event :FormEvent<HTMLInputElement>) => {
+      
+        console.log(event.currentTarget.value);
+        setQuestionnaire({ ...questionnaire, brand: event.currentTarget.value});
+      },[questionnaire])
+      const onConsumptionChange = useCallback((event :FormEvent<HTMLInputElement>) => {
+        console.log(event.currentTarget.value);
+        setQuestionnaire({ ...questionnaire, consumption: event.currentTarget.value });
+      },[questionnaire])
+
+
+
+
+    /*************end questionnaire */
     props.task?.forEach((task)=>{
         taskStatus[task.type]=task.status
     })
 
-   
+   const summitQuestionnaire=async ()=>{
+    if (!onVerifyBefore()) {
+        return;
+      }
+      if(!questionnaire.country||!questionnaire.equipment||!questionnaire.brand||!questionnaire.consumption){
+        toast.error('Please fill out the questionnaire');
+        return;
+      }
+      setLoadings({...loadings,QUESTION:true})
+      const questionAnswer :Omit<User,'uid'|'code'>&{question:Question} ={
+           question:questionnaire,
+           address:account?.address!
+      }
+      await api.login.submitQuestionnaire(questionAnswer)
+      setLoadings({...loadings,QUESTION:false})
+      toast.success('Successfully verified Email');
+      props.setProgress(1)
+       
+   }
+   const submitEmail=async ()=>{
+    if (!onVerifyBefore()) {
+        return;
+      }
+      setLoadings({...loadings,VERIFY_EMAIL:true})
+      const user:Omit<User,'uid'> ={
+          email:email,
+          code:'',
+          address:account?.address!
+      }
+      await api.login.submitEmail(user)
+      setLoadings({...loadings,VERIFY_EMAIL:false})
+      toast.success('Successfully verified Email');
+      props.setProgress(1)
+    }
     /**
      * 
      */
@@ -137,6 +201,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
                 01. Retweet @Prome_Network on Twitter
                 </p>
                 <Button
+                 loading={loadings?.INTERACT_TWITTER }
                   autoCapitalize="true"
                   className="flex items-center gap-3 w-full rounded-full border-[1px] text-font "
                 >
@@ -163,6 +228,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
                 02. Like  @Prome_Network on Twitter
                 </p>
                 <Button
+                loading={loadings?.LIKE_TWEETER }
                   autoCapitalize="true"
                   className="flex items-center gap-3 w-full rounded-full border-[1px] text-font "
                 >
@@ -205,7 +271,9 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
             }}
           >
             <div className="block bg-card">
-              <Button  className="rounded-3xl  bg-connect text-btn/[0.8] text-xs" onClick={()=>connectWallet()}>
+              <Button 
+              loading={loadings?.LOGIN_WALLET }
+               className="rounded-3xl  bg-connect text-btn/[0.8] text-xs" onClick={()=>connectWallet()}>
                 Connect Wallet
               </Button>
             </div>
@@ -219,6 +287,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
           >
             <div className="block bg-card  ">
               <div className="py-6">
+                
                 <p className="text-xs text-connect mb-2">Verify Your Email</p>
                 <div className="relative flex w-full bg-blue">
                   <Input
@@ -231,19 +300,25 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
                   />
                 </div>
                 <div className="flex flex-row mt-4 ">
-                  <div className="relative flex w-full items-end">
+                  <div className="relative flex w-3/4 items-end">
                     <Input
                     crossOrigin={"true"}
                       type="text"
                       placeholder="code"
                       value={code}
-                      className="w-full outline outline-0 focus:outline-1  bg-btn border rounded-full py-4  bg-card  text-white"
+                      className="outline outline-0 focus:outline-1   bg-btn border rounded-full py-4  bg-card  text-white"
                       onChange={onCodeChange}
                     />
+                
                   </div>
-                  <CountdownButton/>
+                  <CountdownButton  email={email}/>
                 </div>
               </div>
+              <Button 
+              loading={loadings?.VERIFY_EMAIL }
+              className="rounded-3xl  bg-connect text-btn/[0.8] text-xs mt-8 px-6" onClick={submitEmail}>
+                    Submit
+                  </Button>
             </div>
           </TaskCard>
           <TaskCard
@@ -266,8 +341,9 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
                     <Select
                       size="lg"
                       label="Select Country"
+                      onChange={onCountryChange}
                       selected={(element) =>
-                        element &&
+                        element&&
                         cloneElement(element, {
                           disabled: true,
                           className:
@@ -281,7 +357,9 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
                           value={name}
                           className="flex items-center gap-2"
                         >
-                          <img
+                          <Image
+                           width={20}
+                           height={20}
                             src={flags.svg}
                             alt={name}
                             className="h-5 w-5 rounded-full object-cover"
@@ -295,7 +373,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
                     <p className="text-sm text-white mt-4 mb-3">
                       02. Whether there is a photovoltaic equipment at your home?
                     </p>
-                    <Select label="Select ">
+                    <Select label="Select " onChange={selectEquip}>
                       <Option value="yes">Yes</Option>
                       <Option value="no">No</Option>
                     </Select>
@@ -306,6 +384,8 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
                       and model of the photovoltaic equipment.
                     </p>
                     <Input
+                    onInputCapture={onBrandChange}
+    
                     crossOrigin={"true"}
                       label="Enter"
                       type="text"
@@ -317,9 +397,11 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
                     <p className="text-sm text-white mt-4 mb-3">
                       04. Your daily household electricity consumption
                     </p>
-                    <Input crossOrigin={"true"} label="consumption" icon={<span>KW</span>} />
+                    <Input crossOrigin={"true"} label="consumption" icon={<span>kWh</span>}  onInput={onConsumptionChange} />
                   </div>
-                  <Button className="rounded-3xl  bg-connect text-btn/[0.8] text-xs mt-8 px-6">
+                  <Button 
+                  loading={loadings?.QUESTION }
+                  className="rounded-3xl  bg-connect text-btn/[0.8] text-xs mt-8 px-6" onClick={summitQuestionnaire}>
                     Submit
                   </Button>
                 </form>
@@ -376,7 +458,9 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
                   <p className="text-xs text-connect mb-6 mt-8 pt-10 border-t border-font border-solid" >
                     Share this airdrop with your friend
                   </p>
-                  <Button className="rounded-3xl  bg-connect text-btn/[0.8] text-xs">
+                  <Button 
+                  loading={loadings?.SHARE }
+                  className="rounded-3xl  bg-connect text-btn/[0.8] text-xs">
                  Verify Task(s)
               </Button>
                 </div>
@@ -386,7 +470,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
         </div>
         <div className="bg-card px-8 py-10 mt-5">
         <div className="text-white/[0.8] text-[1.313rem] mb-8">Coupons</div>
-        <CouponList coupons={Coupons}/>
+        <CouponList  address={account?.address}/>
         </div>
       </>)
 
@@ -418,7 +502,7 @@ export default function Task() {
         })
     }
   return (
-    <TaskInner task={data} account={{address: account.publicKey?.toBase58()}} step={currentProcess}  setProgress={(add)=>setProgress(currentProcess + add)}/>
+    <TaskInner task={data} account={{address: account.publicKey?.toBase58()!}} step={currentProcess}  setProgress={(add)=>setProgress(currentProcess + add)}/>
   );
 }
 

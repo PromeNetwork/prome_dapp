@@ -1,16 +1,19 @@
 import { Input, Button} from "@material-tailwind/react";
-export default function CouponList({ coupons }: { coupons: string[] }) {
+import { useCouponQuery } from "@hooks/UseTask";
+export default function CouponList({address}:{address:string|undefined}) {
+  debugger
+  const {isPending, error, data}= useCouponQuery(address!)
     return (
         <>{
-        coupons&&coupons.length>0?
+        !error&&!isPending&&data&&data.length>0?
         <div className="flex  bg-card  flex-col gap-6">
-        {coupons.map((coupon) => (
+        {data.map((coupon) => (
             <Button
-            key={coupon}
+            key={coupon.id!}
             autoCapitalize="true"
             className=" flex items-center gap-lg w-full rounded-full border-[1px] text-font "
           >
-            <p className="text-lg text-center w-full">{coupon}</p>
+            <p className="text-lg text-center w-full">{coupon.code}</p>
           </Button>
         ))
         }

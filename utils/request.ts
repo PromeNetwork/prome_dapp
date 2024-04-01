@@ -51,7 +51,6 @@ service.interceptors.response.use(async res => {
 
       }
     } else {
-      debugger
       return Promise.reject(new Error(msg))
     }
   },
