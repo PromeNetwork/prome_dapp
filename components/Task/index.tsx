@@ -1,5 +1,5 @@
 import { TaskCard, Icon, CouponList } from "../index";
-import UnTwitter from "@images/UnTwitter.png";
+import UnTwitter from "@images/untwitter.png";
 import UnTelegram from "@images/telegram.png";
 import UnEmail from "@images/email.png";
 import UnConnect from "@images/prome.png";
