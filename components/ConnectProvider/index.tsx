@@ -90,7 +90,7 @@ useEffect(()=>{
 //          autoSignIn(wallet.adapter);
 //     }
 // }, [wallet,connected,connecting, publicKey])
-useAutoSignIn(wallet?.adapter,connected,connecting,publicKey)
+useAutoSignIn(wallet?.adapter??null,connected,connecting,publicKey)
 
 
    useEffect(() => {

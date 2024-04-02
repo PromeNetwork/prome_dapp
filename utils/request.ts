@@ -1,5 +1,4 @@
 import axios,{AxiosInstance} from 'axios'
-import { refreshTokenAction} from "@utils/token";
 import {getCurrentAccessToken, getCurrentAddress} from "@utils/storageUtils";
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
@@ -26,7 +25,7 @@ service.interceptors.response.use(async res => {
       if (code != null && code !== 0) {
         if (code === 401) {
           const originalRequest = res.config;
-          await refreshTokenAction()
+          // await refreshTokenAction()
           originalRequest.headers['Authorization'] = 'Bearer ' + getCurrentAccessToken(getCurrentAddress());
           return service(originalRequest);
         } else {

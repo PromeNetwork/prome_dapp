@@ -11,8 +11,7 @@ import * as api from "@api/index";
 import { Button, Input, Select, Option } from "@material-tailwind/react";
 import { useCountries } from "use-react-countries";
 import { signMessage } from '@wagmi/core'
-import { useState, cloneElement, useEffect, useCallback, FormEventHandler, FormEvent, HTMLInputElement } from "react";
-import { config} from '@components/provider'
+import { useState, cloneElement, useEffect, useCallback, FormEventHandler, FormEvent } from "react";
 import { DocumentDuplicateIcon } from "@heroicons/react/20/solid";
 import {useAccount} from "wagmi";
 import { toast } from 'react-hot-toast';
