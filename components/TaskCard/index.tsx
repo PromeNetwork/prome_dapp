@@ -28,7 +28,7 @@ export default function TaskCard(props:{task: Task,children?:React.ReactNode}) {
             <div className="mx-auto w-full flex justify-between leading-none">
                 <div className='flex justify-start  items-center'>
                <Icon src={task.icon.src}  isSelect={task.icon.isSelect} />
-               <div className="ml-2  text-connect text-[1.125rem] ">{task.title}</div>
+               <div className="ml-2  text-connect lg:text-[1.125rem] phone:text-[0.8rem] ">{task.title}</div>
                </div>
                <div className="flex  w-[5.25rem] justify-end content-center  items-center">
                <CheckIcon className="h-4 w-4 bg-connect  rounded-full justify-items-center" />
@@ -46,7 +46,7 @@ export default function TaskCard(props:{task: Task,children?:React.ReactNode}) {
                 <div className="mx-auto w-full flex justify-between leading-none">
                     <div className='flex justify-start  items-center'>
                    <Icon src={task.icon.src}  isSelect={task.icon.isSelect} />
-                   <div className="ml-2  text-[1.125rem] text-font ">{task.title}</div>
+                   <div className="ml-2  lg:text-[1.125rem] phone:text-[0.8rem] text-font ">{task.title}</div>
                    </div>
                    <div className="flex  w-[5.25rem] justify-end content-center  items-center">
                     {

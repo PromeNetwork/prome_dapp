@@ -3,15 +3,9 @@ import {ActiveLink,Connect} from "@components/index";
 import Image from "next/image";
 import { ReactNode,useEffect,useState } from "react";
 import { useAccount,useSignMessage,useAccountEffect } from "wagmi";
-import { signMessage } from '@wagmi/core'
 import * as api from "@api/index";
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Dialog } from '@headlessui/react'
-import { recoverMessageAddress } from 'viem'
-import {useAtom} from "helux";
-import { loginAtom } from '@hooks/index'
-import { config} from '@components/provider'
-import{ setLoginResult } from '@utils/storageUtils'
 
 
 // const navigation = [
@@ -31,47 +25,13 @@ export default function Layout(props: Props) {
 
 
 
-  // useAccountEffect({
-  //   onConnect(data) {
-  //     (async()=>{
-  //       if( !login){
-  //        try{
-  //         const message=`welcome to weiland ${data?.address}`;
-  //        const signResult=await signMessage(Config,{ message });
-  //        console.log("signResult",signResult);
-  //        if(!signResult){
-  //           return;
-  //        }
-  //         const recoveredAddress=await recoverMessageAddress({
-  //           message,
-  //           signature:signResult,
-  //         })
-  //         if(recoveredAddress.toLowerCase()===data?.address.toLowerCase()){
-  //           const loginResult=await api.login.userLogin(recoveredAddress,signResult);
-  //           console.log("loginResult",loginResult);
-  //           setLogin(true)
-  //           setLoginResult(JSON.stringify(loginResult),recoveredAddress)
-  //         }
-  //        setLogin(true)
-  //      }catch(e){
-  //        console.log("error",e);
-  //      }
-  //       }
-      
-  //   })()
-  // },
-  //   onDisconnect() {
-  //     console.log('Disconnected!')
-  //   },
-  // })
-
   
 
 
 
 
   return (
-    <div>
+    <div className="">
     <header className=" inset-x-0 top-0 z-50 bg-header">
         <nav className="flex items-center justify-between p-3 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
@@ -109,16 +69,15 @@ export default function Layout(props: Props) {
         </nav>
         <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
           <div className="fixed inset-0 z-50" />
-          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full bg-card overflow-y-auto px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
               <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
-                <img
-                  className="h-8 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                  alt=""
-                />
+                <span className="sr-only">prome</span>
+                <p className=" font-pix  text-bd text-font">prome</p>
               </a>
+              {
+                      <Connect/>
+                  }
               <button
                 type="button"
                 className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -142,9 +101,7 @@ export default function Layout(props: Props) {
                   ))} */}
                 </div>
                 <div className="py-6">
-                  {/* <div  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                    {renderButton()}
-                  </div> */}
+                 
                   <a href="#" className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                     log ins
                     </a>
@@ -170,7 +127,7 @@ export default function Layout(props: Props) {
           {renderButton()}
         </div>
       </div> */}
-          <div className="bg-white">
+          <div className="bg-[#2A2F32] bg-discribe">
       {/* <div className="relative isolate  pt-[4rem] "> */}
       {children}
       {/* </div> */}

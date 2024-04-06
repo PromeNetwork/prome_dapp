@@ -12,9 +12,14 @@ module.exports =withMT({
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
     "./node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}"
+    "./node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}",
+    "./styles/*.css"
   ],
   theme: {
+    backgroundImage:{
+      'gradient-183': 'linear-gradient(183deg, var(--tw-gradient-stops))',
+      'discribe':'radial-gradient( 50% 47% at 74% 38%, #FFFFFF 0%, rgba(255,255,255,0.86) 41%, rgba(255,255,255,0.05) 100%, rgba(255,255,255,0) 100%)'
+    },
     colors:{
       'white':"#ffffff",
       'header':'#191919',
@@ -24,15 +29,20 @@ module.exports =withMT({
       'card':'#303030',
       'line':'#595959',
       'layer':'#454545',
+      'footer':'#252A1E',
     },
-    screens: {
-      sm: '480px',
-      md: '768px',
-      lg: '976px',
-      xl: '1440px',
-    },
-   
+    
     extend: {
+      screens:{
+        'xs':'375px',
+        'sm':'640px',
+        'md':'768px',
+        'lg':'1024px',
+        'xl':'1280px',
+        '2xl':'1536px',
+        'phone': {'max': '640px'},
+  
+      },
       fontFamily: {
         pix: "'Press Start 2P'",
       },

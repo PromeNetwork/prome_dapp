@@ -60,6 +60,7 @@ export const  ConnectProvider: FC<{ children: ReactNode }> = ({ children }) => {
             setLoginResult(JSON.stringify(user),address);
         },
         loginWallet: wallet?async () => {
+          
             const address = await autoSignIn(wallet.adapter);
           }:()=>{},
           logoutWallet: () => {

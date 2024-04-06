@@ -23,7 +23,7 @@ export default function WalletOptionsModal(props: Props) {
 
   return open ? (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-card">
         <div className="relative w-auto max-w-3xl mx-auto my-6">
           <div className="relative flex flex-col bg-white border-0 rounded-lg shadow-lg">
             <div className="flex items-center justify-around p-5 mb-4">

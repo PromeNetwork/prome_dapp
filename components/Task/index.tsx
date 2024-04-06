@@ -7,21 +7,20 @@ import UnQuestion from "@images/question.png";
 import UnShare from "@images/share.png";
 import Image from "next/image";
 import UnQr from "@images/qrcode.png";
+import  SharePic from "@images/share_temp.png";
 import * as api from "@api/index";
-import { Button, Input, Select, Option } from "@material-tailwind/react";
+import Link from "next/link";
+import { Button, Input, Select, Option, Dialog, DialogBody } from "@material-tailwind/react";
 import { useCountries } from "use-react-countries";
-import { signMessage } from '@wagmi/core'
-import { useState, cloneElement, useEffect, useCallback, FormEventHandler, FormEvent } from "react";
+import { useState, cloneElement, useEffect, useCallback, FormEventHandler, FormEvent, useMemo } from "react";
 import { DocumentDuplicateIcon } from "@heroicons/react/20/solid";
-import {useAccount} from "wagmi";
 import { toast } from 'react-hot-toast';
 import { useTaskQuery ,type Task,type  TaskType } from "@hooks/index";
-import { recoverMessageAddress } from 'viem'
 import { useWallet } from "@solana/wallet-adapter-react";
 import { User, Question} from '@api/index'
 import {autoSignIn,CountdownButton } from '@components/index'
 import { useUserContext } from "../index";
-import {useCouponQuery} from '@hooks/index'
+import {useCouponQuery, useGenerateSharePic, generateSharePic} from '@hooks/index'
 type LoadingType = {
     [k in TaskType]:boolean
 }
@@ -29,6 +28,8 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
     const [email, setEmail] = useState("");
     const [code, setCode] = useState("");
     const { countries } = useCountries();
+    const [inviteUrl, setInviteUrl] = useState("");
+    const [isShowPic, setIsShowPic] = useState(false);
     const [questionnaire, setQuestionnaire] = useState<Question>({
         country: "",
         equipment: "",
@@ -52,6 +53,8 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
         LIKE_TWEETER:'incomplete'
 
     }
+
+   
     //*****************************questionnaire */
 
     const selectEquip = useCallback((value?: string) => {
@@ -100,17 +103,50 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
       props.setProgress(1)
        
    }
+const sendEmailVerify=async (email:string)=>{
+  if (!onVerifyBefore()) {
+    return;
+  }
+  // setLoadings({...loadings,VERIFY_EMAIL:true})
+  await api.login.sendMailCode(account?.address!,email)
+  // setLoadings({...loadings,VERIFY_EMAIL:false})
+  toast.success('Successfully verified Email');
+  // props.setProgress(1)
+}
+   useEffect(()=>{
+    async function  loadingShare(){
+      const data=await generateSharePic(user?.code!,SharePic.src)
+      if(data){
+        setInviteUrl(data as string)
+        
+      }
+     }
+   
+     loadingShare();
+
+   },[user,setInviteUrl])
+    
+   const showPic=async ()=>{
+    if (!onVerifyBefore()) {
+        return;
+      }
+      if(!user?.code){
+        toast.error('You must login wallet firstly');
+        return;
+      }
+  
+      setIsShowPic(true)
+    }
    const submitEmail=async ()=>{
     if (!onVerifyBefore()) {
         return;
       }
       setLoadings({...loadings,VERIFY_EMAIL:true})
-      const user:Omit<User,'uid'> ={
-          email:email,
-          code:'',
-          address:account?.address!
-      }
-      await api.login.submitEmail(user)
+      await api.login.verifyMailCode({
+        email:email,
+        code: code,
+        address:account?.address!
+    })
       setLoadings({...loadings,VERIFY_EMAIL:false})
       toast.success('Successfully verified Email');
       props.setProgress(1)
@@ -299,23 +335,29 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
                   />
                 </div>
                 <div className="flex flex-row mt-4 ">
-                  <div className="relative flex w-3/4 items-end">
+                  <div className=" flex bg:w-3/4 md:w-3/4  phone: w-5/8 items-end">
+                    <div className="min-w-0">
                     <Input
                     crossOrigin={"true"}
+                    containerProps={{
+                      className: "min-w-0",
+                    }}
                       type="text"
                       placeholder="code"
                       value={code}
-                      className="outline outline-0 focus:outline-1   bg-btn border rounded-full py-4  bg-card  text-white"
+                      size={"md"}
+                      className="outline outline-0 focus:outline-1 phone: w-5/8   bg-btn border rounded-full py-4  bg-card  text-white"
                       onChange={onCodeChange}
                     />
-                
+                </div>
                   </div>
-                  <CountdownButton  email={email}/>
+                  <CountdownButton  email={email} sendCode={()=>sendEmailVerify(email)}/>
                 </div>
               </div>
               <Button 
               loading={loadings?.VERIFY_EMAIL }
-              className="rounded-3xl  bg-connect text-btn/[0.8] text-xs mt-8 px-6" onClick={submitEmail}>
+              disabled={!email||!code}
+              className="rounded-3xl  bg-connect text-btn/[0.8] text-xs mt-8 px-6"  onClick={submitEmail}>
                     Submit
                   </Button>
             </div>
@@ -411,7 +453,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
           <TaskCard
             task={{
               status: taskStatus['SHARE']!,
-              title: "Share this airdrop with your friend",
+              title: <p>Share this airdrop with your friend<span className="rounded-xl  font-500 text-[#303030] ml-2 text-[10px] px-[6px] py-[2px]  bg-gradient-183 from-[#CFFF8B]  from-10% via-[#F9FFF0] from-44% to-[#CFFF8B]">Additional Coupon</span></p>,
               icon: { src: UnShare, isSelect: true },
             }}
           >
@@ -436,20 +478,25 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
                   <p className="text-sm text-white mt-4 mb-3">or share it via</p>
                   <div className="flex flex-row">
                     <Image
-                      className=" mr-2 w-12 h-12 rounded-full p-2 border-[1px] border-white "
+                      className=" mr-2 w-12 h-12 rounded-full "
                       src={UnTwitter}
                       alt="twitter"
                     />
+                  <Link href={`https://t.me/share/url?url=http://localhost:3000?code=${user?.code}`}>
                     <Image
                       className="mr-2  w-12 h-12 rounded-full  "
                       src={UnTelegram}
                       alt="telegram"
                     />
+                    </Link>
+                  
                     <Image
                       className="mr-2  w-12 h-12 rounded-full "
                       src={UnQr}
+                      onClick={()=>showPic()}
                       alt="qrcode"
                     />
+                    
                   </div>
                   <div>
   
@@ -471,6 +518,13 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
         <div className="text-white/[0.8] text-[1.313rem] mb-8">Coupons</div>
         <CouponList  address={account?.address}/>
         </div>
+        <Dialog open={isShowPic} handler={()=>setIsShowPic(false)} className="w-4/5">
+          <DialogBody>
+          {
+            inviteUrl&&<img crossOrigin="anonymous" className="aspect-w-375 aspect-h-667 " src={decodeURIComponent(inviteUrl)} alt="share" />
+          }
+          </DialogBody>
+          </Dialog>
       </>)
 
 
@@ -478,7 +532,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
 
 export default function Task() {
   const [email, setEmail] = useState("");
-  const [Coupons, setCoupons] = useState(['weqweqweqwewqeqwe','qeqweqweqweqwe'])
+  const [Coupons, setCoupons] = useState([])
   const [code, setCode] = useState("");
   const { countries } = useCountries();
   const account = useWallet();

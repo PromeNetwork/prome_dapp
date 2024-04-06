@@ -6,3 +6,4 @@ export  { useCountdown ,type  CountDownOptions, type TimeInfo  } from './CountDo
 export { useTaskQuery,useCouponQuery, type Task,type TaskType } from './UseTask';
 
 export {useAutoSignIn} from './UseRegister';
+export { useGenerateSharePic, generateSharePic } from './UseSharePic';

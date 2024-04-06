@@ -13,29 +13,26 @@ export default function ProductDescribe(){
 
     return(
         <>
-        <div className="basis-2/5 flex flex-col justify-center ">
+        <div className="basis-3/5 flex flex-col justify-center ">
             <div className="text-white text-[3rem] leading-[2.625rem]  ">
             <p className="py-2">
-            <span className="pr-3">Get  </span> <span className="pr-3">FREE</span>  <span className="pr-3">green </span>    <span className="pr-3">energy. </span> 
+            <span className="pr-3">Get  </span> <span className="pr-3 text-[#CFFF8B]">FREE</span>  <span className="pr-3">green </span>    <span className="pr-3">energy. </span> 
              </p>
-             <div className="text-xl text-white/[0.6] pt-[1.5625rem]">
+             <div className="text-xl text-white/[0.6] pt-[1.5625rem] text-[#CFFF8B] ">
             <p>
-            Contribute to the energy
+            Contribute to the energy revolution and get permanent rewards!
             </p>
-            <p>
-            revolution and get permanent rewards!
-                </p>
                 </div>
             </div>
             <div className="mt-6 text-white/[0.6] text-xs">
               <p>
-              PROME Network is rewarding the effective use of green energy and the large-scale adoption of renewable energy infrastructure, motivating more people to participate in the energy revolution, and working together to accelerate decarbonization to achieve a sustainable future.
-              </p>
+              Join our energy revolution! Free Green Energy and permanent            </p>
+              <p> rewards from PROME Network. $300K in rewards waiting!  </p>
                 </div>
                <div className="text-[#CFFF8B]  pt-[2.125rem]">
-               <Button className="block w-fit border-b border-font cursor-pointer" onClick={()=>setIsOpen(true)}>Show More</Button>
+               <p className="block w-fit border-b border-[#CFFF8B]  cursor-pointer" onClick={()=>setIsOpen(true)}>Show More</p>
                </div>
-               <Dialog open={isOpen} handler={() => setIsOpen(false)} className=" bg-card  w-[45.625rem] h-[70vh]  overflow-y-scroll">
+               <Dialog open={isOpen} handler={() => setIsOpen(false)} className=" bg-card   h-[70vh]  overflow-y-scroll">
                     <DialogBody>
                         <Detail/>
                     </DialogBody>

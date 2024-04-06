@@ -59,3 +59,21 @@ export const submitQuestionnaire=(service:AxiosInstance)=>async (question:Omit<U
         data:{...question}
     })
 }
+
+export const  sendMailCode=(service:AxiosInstance)=>async (address:string,email:string):Promise<void>=>{
+    return  await service({
+        url:'/account/code/send',
+        method:'post',
+        headers: {'Authorization': 'Bearer ' +  await getToken(address)},
+        data:{'email':email}
+    })
+}
+
+export const verifyMailCode=(service:AxiosInstance)=>async ({address,email,code}:{address:string,email:string,code:string}):Promise<void>=>{
+    return  await service({
+        url:'/account/code/verify',
+        method:'post',
+        headers: {'Authorization': 'Bearer ' +  await getToken(address)},
+        data:{'email':email,'code':code, 'address':address}
+    })
+}

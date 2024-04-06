@@ -18,7 +18,7 @@ export default function Detail() {
                 Now PROME Network’s flagship product dCronus Pro has launched, the first blockchain-modified 20kWh energy storage device! 20kWh can charge an iPhone 15 1360 times, provide power for Tesla Model 3 for 100+KM, and achieve energy trading in PROME in the future. </p>
                 <div className="text-xl text-white/[0.6] pt-[1.5625rem] flex flex-row items-center">
                     <div className='text-center'>
-                <Image src={Equip} alt="box" className="w-[7.625rem] h-[7.625rem]"/>
+                <Image src={Equip} alt="box" className="w-[7.625rem]"/>
                 <span className='text-base'> 20kWh</span>
                 </div>
                 <div className='mx-[1.375rem]'>
@@ -26,7 +26,7 @@ export default function Detail() {
                     <p className='text-base'>&nbsp;</p>
                 </div>
                 <div className='text-center'>
-                <Image src={Box} alt="box" className="w-[7.625rem] h-[7.625rem]"/>
+                <Image src={Box} alt="box" className="w-[7.625rem] "/>
                 <span className='text-base'> 1360 times</span>
                 </div>
                 <div className='mx-[1.375rem]'>
@@ -34,7 +34,7 @@ export default function Detail() {
                     <p className='text-base'>&nbsp;</p>
                 </div>
                 <div className='text-center'>
-                <Image src={Car} alt="box" className="w-[7.625rem] h-[7.625rem]"/>
+                <Image src={Car} alt="box" className="w-[7.625rem] "/>
                 <span className='text-base'> 20kWh</span>
                 </div>
             </div>
@@ -97,12 +97,12 @@ export default function Detail() {
 
             </div>
             <div>
-                <div className="w-[70%] py-5 px-6 text-sm bg-layer text-white/[0.9] mt-2">
+                <div className="bg:w-[70%] phone:w-[90%] py-5 px-6 text-sm bg-layer text-white/[0.9] mt-2">
                 <p>Completed all event tasks and </p>
                 <p>shared the airdrop activity to your friend</p>
                 <p className="text-connect">You get your First coupon</p>
                 </div>
-                <div className="w-[70%] py-5 px-6 text-sm bg-layer text-white/[0.9] mt-2">
+                <div className="bg:w-[70%] phone:w-[90%] py-5 px-6 text-sm bg-layer text-white/[0.9] mt-2">
                 <p>Your friend joined by your referral link, completed all event  </p>
                 <p>tasks and shared the airdrop activity to his/herfriend</p>
                 <p className="text-connect">You get your second coupon</p>

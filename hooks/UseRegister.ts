@@ -13,7 +13,11 @@ export function useAutoSignIn(adapter: Adapter|null, connected :boolean, connect
         console.log("auto sign in", adapter, connected, connecting, publicKey);
         // 这里的 fetcher 函数实际上执行我们需要的操作，而不是获取数据
         // 你可以将 autoSignIn 函数的结果返回，如果它有返回值的话
-        return autoSignIn(adapter!);
+          try{
+          return autoSignIn(adapter!);
+        }catch(e){
+          console.error(e);
+        }
       },
       {
         // 根据需要配置选项，例如重试、刷新间隔等
@@ -22,4 +26,5 @@ export function useAutoSignIn(adapter: Adapter|null, connected :boolean, connect
   
     // useSWR会返回data和error，你可以根据情况使用它们
     // 例如，根据返回的data显示操作结果，或者处理error
+    return { data, error };
   }
