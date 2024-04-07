@@ -53,7 +53,10 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
         LIKE_TWEETER:'incomplete'
 
     }
-
+    const copyUrl = () => {
+      navigator.clipboard.writeText(`http://localhost:3000?code=${user?.code}`);
+      toast.success('Copied to clipboard');
+    }
    
     //*****************************questionnaire */
 
@@ -126,6 +129,13 @@ const sendEmailVerify=async (email:string)=>{
 
    },[user,setInviteUrl])
     
+   const downloadPic=()=>{
+    const a = document.createElement('a');
+    a.href = inviteUrl;
+    a.download = 'share.png';
+    a.click();
+  }
+
    const showPic=async ()=>{
     if (!onVerifyBefore()) {
         return;
@@ -134,9 +144,11 @@ const sendEmailVerify=async (email:string)=>{
         toast.error('You must login wallet firstly');
         return;
       }
-  
+       
       setIsShowPic(true)
+      downloadPic()
     }
+
    const submitEmail=async ()=>{
     if (!onVerifyBefore()) {
         return;
@@ -326,6 +338,7 @@ const sendEmailVerify=async (email:string)=>{
                 <p className="text-xs text-connect mb-2">Verify Your Email</p>
                 <div className="relative flex w-full bg-blue">
                   <Input
+                   label="Email Address"
                     crossOrigin={"true"}
                     type="email"
                     placeholder="Email Address"
@@ -338,6 +351,7 @@ const sendEmailVerify=async (email:string)=>{
                   <div className=" flex bg:w-3/4 md:w-3/4  phone: w-5/8 items-end">
                     <div className="min-w-0">
                     <Input
+                    label="code"
                     crossOrigin={"true"}
                     containerProps={{
                       className: "min-w-0",
@@ -372,7 +386,7 @@ const sendEmailVerify=async (email:string)=>{
             <div className="block bg-card">
               <div className="py-6">
                 <p className="text-xs text-connect mb-2">
-                  01. Retweet @Prome_Network on Twitter
+                Please answer the following questions
                 </p>
                 <form className="mt-2 mb-8 w-full max-w-screen-lg ">
                   <div>
@@ -471,7 +485,7 @@ const sendEmailVerify=async (email:string)=>{
                     label="consumption"
                     className="rounded-full"
                     value={user?`http://localhost:3000?code=${user?.code}`:"http://localhost:3000"}
-                    icon={<DocumentDuplicateIcon />}
+                    icon={<DocumentDuplicateIcon onClick={()=>copyUrl()}/>}
                   />
                 </div>
                 <div>
@@ -518,10 +532,10 @@ const sendEmailVerify=async (email:string)=>{
         <div className="text-white/[0.8] text-[1.313rem] mb-8">Coupons</div>
         <CouponList  address={account?.address}/>
         </div>
-        <Dialog open={isShowPic} handler={()=>setIsShowPic(false)} className="w-4/5">
-          <DialogBody>
+        <Dialog open={isShowPic} handler={()=>setIsShowPic(false)}  className="min-w-0" >
+          <DialogBody >
           {
-            inviteUrl&&<img crossOrigin="anonymous" className="aspect-w-375 aspect-h-667 " src={decodeURIComponent(inviteUrl)} alt="share" />
+            inviteUrl&&<img crossOrigin="anonymous" className="aspect-w-375 aspect-h-667 mx-auto " src={decodeURIComponent(inviteUrl)} alt="share" />
           }
           </DialogBody>
           </Dialog>

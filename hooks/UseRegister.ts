@@ -3,6 +3,9 @@ import useSWR from "swr"
 import {autoSignIn} from '@components/index'
 import { WalletAdapter, Adapter } from "@solana/wallet-adapter-base";
 import { PublicKey } from "@solana/web3.js";
+import { useWallet } from "@solana/wallet-adapter-react";
+
+let isInit=false;
 export function useAutoSignIn(adapter: Adapter|null, connected :boolean, connecting:boolean, publicKey:PublicKey | null) {
     // 使用useSWR的key参数来控制请求的唯一性和条件触发
     // 我们这里不直接请求数据，而是用它来触发操作，因此key可以是任何依赖变化的值
@@ -14,7 +17,11 @@ export function useAutoSignIn(adapter: Adapter|null, connected :boolean, connect
         // 这里的 fetcher 函数实际上执行我们需要的操作，而不是获取数据
         // 你可以将 autoSignIn 函数的结果返回，如果它有返回值的话
           try{
-          return autoSignIn(adapter!);
+            if(!isInit){
+           autoSignIn(adapter!);
+          isInit=true;
+          return
+        }
         }catch(e){
           console.error(e);
         }

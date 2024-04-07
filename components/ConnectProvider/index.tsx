@@ -1,4 +1,4 @@
-import React, { FC, ReactNode ,createContext, useContext ,useState,useEffect,useMemo } from 'react'
+import React, { FC, ReactNode ,createContext, useContext ,useState,useEffect,useMemo, useCallback } from 'react'
 
 import { WalletBtn,useAutoConnect ,autoSignIn , getToken } from "@components/index";
 import { setLoginResult, removeLoginResult } from "@utils/storageUtils";
@@ -7,6 +7,7 @@ import { useWallet, useConnection, useLocalStorage } from "@solana/wallet-adapte
 import  {User, login} from "@api/index";
 import {PhantomWalletName} from "@solana/wallet-adapter-wallets";
 import {useAutoSignIn} from "@hooks/index";
+import { useCall } from 'wagmi';
 
 type Web3Api= {
     walletName: WalletName | null;
@@ -94,14 +95,23 @@ useEffect(()=>{
 useAutoSignIn(wallet?.adapter??null,connected,connecting,publicKey)
 
 
+
+const initWallet=useCallback(async () => {
+    debugger
+    if (!connected && !connecting && walletName ) {
+        await select(walletName)
+    }
+},[walletName, connected, connecting,select])
+
+// initWallet()
    useEffect(() => {
 
-    const loadUser = async () => { 
+    const loadUser = async () => {
 
     console.log("init wallet: ",walletName,connected,connecting,autoConnect,wallet,publicKey)
-    if (autoConnect && !connected && !connecting && walletName  && !wallet) {
-      select(walletName)
-    }
+    // if (autoConnect && !connected && !connecting && walletName  && !wallet) {
+    //   select(walletName)
+    // }
     if(!walletName&&wallets.length>0){
       setWalletName(wallets[0].adapter.name)
     }

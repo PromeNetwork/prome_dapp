@@ -54,7 +54,7 @@ const AppWalletConnectButton = () => {
  
   return (
     <div style={{ display: "flex", justifyContent: "flex-end", padding: 0 }}>
-      <Dialog  open={visible && !connected} handler ={()=>setVisible(false)} className="bg-card py-6 px-4" size="sm">
+      <Dialog  open={visible && !connected} handler ={()=>setVisible(false)} className="bg-card py-6 px-4 z-60" size="sm">
         <div className="flex flex-col  items-center">
       {wallets.filter((wallet) => wallet.readyState === "Installed")
                   .length > 0 ? (

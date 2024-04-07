@@ -101,10 +101,10 @@ export default function Layout(props: Props) {
                   ))} */}
                 </div>
                 <div className="py-6">
-                 
+{/*                  
                   <a href="#" className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
                     log ins
-                    </a>
+                    </a> */}
                 </div>
               </div>
             </div>
@@ -127,7 +127,7 @@ export default function Layout(props: Props) {
           {renderButton()}
         </div>
       </div> */}
-          <div className="bg-[#2A2F32] bg-discribe">
+          <div className="bg-[#2A2F32] lg:bg-discribe md:bg-discribe ">
       {/* <div className="relative isolate  pt-[4rem] "> */}
       {children}
       {/* </div> */}

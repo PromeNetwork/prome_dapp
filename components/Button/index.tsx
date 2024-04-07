@@ -104,14 +104,14 @@ export default function WalletBtn(props: Props) {
     navigator.clipboard.writeText(account.address);
     toast.success('Copied to clipboard');
   }
-  const width=20
+
   const renderBtn = () => {
     return (<div className="flex flex-row"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAjVBMVEVHcExneuFzaugj5rKJT/UyzMBBtMpYlNaRSfse8KhQnNNKpdB1Z+ldiNyJT/VIucU0ycJVktcZ+Z6XRf8m4bdanNdFrswp27tigd5Yj9hGq82LTvaVR/1Qm9Mg7KxKpdBtcuQl5LVkfeBFrsxdiNyDVPI/uMh7X+0b9qEp3LtVktc5wcV0aOkzysEu0r6VnneeAAAAG3RSTlMAt3e9vG+6DHNwvL67vU8Xvbrc2kcrnb3YyNWr1DRIAAAA1klEQVQokZ3R2RKCMAxAUUFBARFccEVANtnk/z/PNKkUkaEz3tczgaadzaRpmKEZ36Fdk7x+vdryAQVQQe2YWWECWoOWXIPOtvf7UIuAm5JWoGGS5x+lTzNT43RUHRxUFNvemqZl6bruuu7pNGc58hWnW45GlmXPponiOK2q/kp0O16n34fWUDegzyaKhNLsgfQ21HxK2Tu0bemhrj6Kx+IKw/J1/s9ZUGuo/w74R9+/seg6xKGPDME67a2EtvcxYrGSOTSYzbheeiZm6R3OdDs/qSz5im/DuDfiWB5adgAAAABJRU5ErkJggg==" alt="solalan" className="w-5 h-5" /><span className="ml-6">{processStringLength(account.address)}</span></div>)
   }
   return (
     <>{!loading && account ? <Popover placement="bottom-start">
       <PopoverHandler>
-        <Button className={`flex items-center justify-center py-2  font-semibold border-solid border border-connect hover:bg-black rounded-3xl ${width && `w-${width}`} ${loading && "cursor-not-allowed opacity-50"}`}>{renderBtn()}</Button>
+        <Button className={`flex items-center justify-center py-2  font-semibold border-solid border border-connect hover:bg-black rounded-3xl  ${loading && "cursor-not-allowed opacity-50"}`}>{renderBtn()}</Button>
       </PopoverHandler>
       <PopoverContent className="w-50 bg-transparent border-0 px-0">
         <div className="flex flex-col  items-center gap-3">

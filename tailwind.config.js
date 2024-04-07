@@ -17,6 +17,7 @@ module.exports =withMT({
   ],
   theme: {
     backgroundImage:{
+      'enenge':'url("/images/enenge.png")',
       'gradient-183': 'linear-gradient(183deg, var(--tw-gradient-stops))',
       'discribe':'radial-gradient( 50% 47% at 74% 38%, #FFFFFF 0%, rgba(255,255,255,0.86) 41%, rgba(255,255,255,0.05) 100%, rgba(255,255,255,0) 100%)'
     },

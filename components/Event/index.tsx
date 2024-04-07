@@ -13,7 +13,7 @@ export default function Event(props:{event:{startTime:string,endTime:string}}) {
   }
     return (
         <div>
-            <div className="flex-col p-8 bg-card">
+            <div className="flex-col p-8 bg-card phone:bg-[#2A2F32]">
             <div className="text-white/[0.8] text-[1.313rem] mb-8">Event_Time</div>
              {
               startTime&&endTime&&startTime.length>0&&endTime.length>0?

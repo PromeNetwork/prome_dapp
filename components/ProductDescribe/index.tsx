@@ -13,7 +13,7 @@ export default function ProductDescribe(){
 
     return(
         <>
-        <div className="basis-3/5 flex flex-col justify-center ">
+        <div className="basis-2/5 flex flex-col justify-center  phone:text-center">
             <div className="text-white text-[3rem] leading-[2.625rem]  ">
             <p className="py-2">
             <span className="pr-3">Get  </span> <span className="pr-3 text-[#CFFF8B]">FREE</span>  <span className="pr-3">green </span>    <span className="pr-3">energy. </span> 
@@ -30,7 +30,7 @@ export default function ProductDescribe(){
               <p> rewards from PROME Network. $300K in rewards waiting!  </p>
                 </div>
                <div className="text-[#CFFF8B]  pt-[2.125rem]">
-               <p className="block w-fit border-b border-[#CFFF8B]  cursor-pointer" onClick={()=>setIsOpen(true)}>Show More</p>
+               <p className="block w-fit border-b border-[#CFFF8B]  phone:mx-auto cursor-pointer" onClick={()=>setIsOpen(true)}>Show More</p>
                </div>
                <Dialog open={isOpen} handler={() => setIsOpen(false)} className=" bg-card   h-[70vh]  overflow-y-scroll">
                     <DialogBody>
