@@ -112,7 +112,7 @@ export const authOptions = {
   providers: defaultProviders,
   callbacks
 }
-console.log(process.env.FACEBOOK_ID,process.env.FACEBOOK_SECRET)
+console.log(process.env.TWITTER_ID,process.env.TWITTER_SECRET)
 
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse){
