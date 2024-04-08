@@ -96,7 +96,7 @@ const defaultProviders = [
     version: "2.0",
     authorization: {
       url: "https://twitter.com/i/oauth2/authorize",
-      params: { scope: "users.read,follows.read,like.read, tweet.read, offline.access" },
+      params: { scope: "users.read,follows.read,post.read, offline.access" },
     },
     userinfo: {
       url: "https://api.twitter.com/2/users/me",
