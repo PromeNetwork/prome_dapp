@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState} from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { recoverMessageAddress } from "viem";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
@@ -55,27 +55,29 @@ const AppWalletConnectButton = () => {
   return (
     <div style={{ display: "flex", justifyContent: "flex-end", padding: 0 }}>
       <Dialog  open={visible && !connected} handler ={()=>setVisible(false)} className="bg-card py-6 px-4 z-60" size="sm">
-        <div className="flex flex-col  items-center">
+      <p className="text-white text-left ml-4 mb-6">Connect_Wallet</p>
+        <div className="flex flex-col  items-center p-6">
+         
       {wallets.filter((wallet) => wallet.readyState === "Installed")
                   .length > 0 ? (
                   wallets
                     .filter((wallet) => wallet.readyState === "Installed")
                     .map((wallet) => (
-                      <div key={wallet.adapter.name} className="flex flex-row mt-4 items-end">
+                      <div key={wallet.adapter.name} className="flex flex-row mt-4 items-end w-4/5 border border-white py-2 px-4 rounded-full">
                         <span>
                             <Image
-                            className="mr-4  w-10 h-10"
+                            className="align-middle "
                           src={wallet.adapter.icon}
                           alt={wallet.adapter.name}
                           width={30}
                           height={30}
                         /></span>
-                          <Button className="inline-block ml-10 w-30"
+                          <span className="inline-block  text-white w-full text-center mr-5"
                         onClick={() => select(wallet.adapter.name)}
                       >
                        
                         {wallet.adapter.name}
-                      </Button>
+                      </span>
                       </div>
                     
                     ))
