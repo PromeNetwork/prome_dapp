@@ -94,6 +94,14 @@ const defaultProviders = [
     clientId: process.env.TWITTER_ID!,
     clientSecret: process.env.TWITTER_SECRET!,
     version: "2.0",
+    authorization: {
+      url: "https://twitter.com/i/oauth2/authorize",
+      params: { scope: "users.read,follows.read,like.read, tweet.read, offline.access" },
+    },
+    userinfo: {
+      url: "https://api.twitter.com/2/users/me",
+      params: { "user.fields": "id,profile_image_url,most_recent_tweet_id","Post.fields":"author_id,id" , "expansions":"pinned_tweet_id" },
+    },
   }) as OAuthConfig<any>,
   // ...add more providers here
 ]
