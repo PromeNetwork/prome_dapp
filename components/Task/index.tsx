@@ -21,6 +21,7 @@ import { User, Question} from '@api/index'
 import {autoSignIn,CountdownButton } from '@components/index'
 import { useUserContext } from "../index";
 import {useCouponQuery, useGenerateSharePic, generateSharePic} from '@hooks/index'
+const ShareUrl='http://localhost:3000'
 type LoadingType = {
     [k in TaskType]:boolean
 }
@@ -54,7 +55,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
 
     }
     const copyUrl = () => {
-      navigator.clipboard.writeText(`http://localhost:3000?code=${user?.code}`);
+      navigator.clipboard.writeText(`${ShareUrl}?code=${user?.code}`);
       toast.success('Copied to clipboard');
     }
    
@@ -225,7 +226,7 @@ const sendEmailVerify=async (email:string)=>{
           <TaskCard
             task={{
               status: taskStatus['FOLLOW_TWITTER']!,
-              title: <p>Follow <a href='' target='_bank' className="border-b ">PROME Network</a>  on Twitter</p>,
+              title: <p>Follow <a href='https://twitter.com/PROME_En' target='_bank' className="border-b ">PROME Network</a>  on Twitter</p>,
               icon: { src: UnTwitter, isSelect: true },
             }}
           >
@@ -247,6 +248,7 @@ const sendEmailVerify=async (email:string)=>{
                 <p className="text-xs text-connect mb-2">
                 01. Retweet @Prome_Network on Twitter
                 </p>
+                <a href="https://x.com/PROME_En/status/1776610812943073551" target="_blank">
                 <Button
                  loading={loadings?.INTERACT_TWITTER }
                   autoCapitalize="true"
@@ -265,7 +267,9 @@ const sendEmailVerify=async (email:string)=>{
                   </svg>
   
                   <p>Retweet the tweet</p>
+                  
                 </Button>
+                </a>
               </div>
               <div></div>
             </div>
@@ -274,6 +278,7 @@ const sendEmailVerify=async (email:string)=>{
                 <p className="text-xs text-connect mb-2">
                 02. Like  @Prome_Network on Twitter
                 </p>
+                <a href="https://x.com/PROME_En/status/1776610812943073551" target="_blank">
                 <Button
                 loading={loadings?.LIKE_TWEETER }
                   autoCapitalize="true"
@@ -293,8 +298,13 @@ const sendEmailVerify=async (email:string)=>{
   
                   <p>Like the tweet</p>
                 </Button>
+                </a>
               </div>
-              <div></div>
+              <div className="block bg-card">
+              <Button loading={loadings?.LIKE_TWEETER&& loadings?.INTERACT_TWITTER } className="rounded-3xl  bg-connect text-btn/[0.8] text-xs" onClick={verifyTwitter}>
+                Verify
+              </Button>
+            </div>
             </div>
           </TaskCard>
           {/* <TaskCard
@@ -484,18 +494,21 @@ const sendEmailVerify=async (email:string)=>{
                   crossOrigin={"true"}
                     label="consumption"
                     className="rounded-full"
-                    value={user?`http://localhost:3000?code=${user?.code}`:"http://localhost:3000"}
+                    value={user?`${ShareUrl}?code=${user?.code}`:ShareUrl}
                     icon={<DocumentDuplicateIcon onClick={()=>copyUrl()}/>}
                   />
                 </div>
                 <div>
                   <p className="text-sm text-white mt-4 mb-3">or share it via</p>
                   <div className="flex flex-row">
+                  <a href={`https://twitter.com/intent/tweet?url=${decodeURIComponent(ShareUrl)}?code=${user?.code}&text=${decodeURIComponent('share to your friend to win extra coupon!')}`} target="_blank">
+
                     <Image
                       className=" mr-2 w-12 h-12 rounded-full "
                       src={UnTwitter}
                       alt="twitter"
                     />
+                    </a>
                   <Link href={`https://t.me/share/url?url=http://localhost:3000?code=${user?.code}`}>
                     <Image
                       className="mr-2  w-12 h-12 rounded-full  "
