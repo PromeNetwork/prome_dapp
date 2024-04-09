@@ -86,7 +86,7 @@ const callbacks = {
       // Here we pass accessToken to the client to be used in authentication with your API
       
       if(curSession.user){
-        curSession.user.id=token.id as string; ;
+        curSession.user.id=token.sub as string; ;
       }
 
       return curSession;

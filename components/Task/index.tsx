@@ -116,7 +116,7 @@ const sendEmailVerify=async (email:string)=>{
   // setLoadings({...loadings,VERIFY_EMAIL:true})
   await api.login.sendMailCode(account?.address!,email)
   // setLoadings({...loadings,VERIFY_EMAIL:false})
-  toast.success('Successfully verified Email');
+  toast.success('Successfully send Email code');
   // props.setProgress(1)
 }
    useEffect(()=>{
@@ -199,16 +199,27 @@ const sendEmailVerify=async (email:string)=>{
         if (!onVerifyBefore()) {
           return;
         }
-        if(!session) {
-          return signIn('twitter')
-        }
+        // if(!session) {
+        //   return signIn('twitter')
+        // }
         setLoadings({...loadings,FOLLOW_TWITTER:true})
 
-        await api.login.addTwitterTask(account?.address!,'FOLLOW_TWITTER','pending', `${session.user?.name!}-${session.user?.id!}`)
+        // await api.login.addTwitterTask(account?.address!,'FOLLOW_TWITTER','pending', `${session.user?.name!}-${session.user?.id!}`)
+        await api.login.addTwitterTask(account?.address!,'FOLLOW_TWITTER','pending', `test`)
         setLoadings({...loadings,FOLLOW_TWITTER:false})
         toast.success('Successfully verified Twitter');
         props.setProgress(1)
        
+      }
+      const verifyRetweet = async () => {
+        if (!onVerifyBefore()) {
+          return;
+        }
+        setLoadings({...loadings,INTERACT_TWITTER:true})
+        await api.login.addTwitterTask(account?.address!,'INTERACT_TWITTER','pending', `test`)
+        setLoadings({...loadings,INTERACT_TWITTER:false})
+        toast.success('Successfully verified Twitter');
+        props.setProgress(1)
       }
     
       
@@ -306,8 +317,8 @@ const sendEmailVerify=async (email:string)=>{
                 </a>
               </div>
               <div className="block bg-card">
-              <Button loading={loadings?.LIKE_TWEETER&& loadings?.INTERACT_TWITTER } className="rounded-3xl  bg-connect text-btn/[0.8] text-xs" onClick={verifyTwitter}>
-                Verify
+              <Button loading={ loadings?.INTERACT_TWITTER || taskStatus['FOLLOW_TWITTER']=="pending"  } className="rounded-3xl  bg-connect text-btn/[0.8] text-xs" onClick={verifyRetweet}>
+                ${ taskStatus['FOLLOW_TWITTER']=="pending" ?"pending":"Verify"}
               </Button>
             </div>
             </div>
