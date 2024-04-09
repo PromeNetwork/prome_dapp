@@ -12,12 +12,7 @@ import  type {
   NextApiRequest,
   NextApiResponse,
 } from "next"
-interface newSession extends Session{
-  accessToken?:string
-  expires_at?:number
-  error?:string
-  id?:string
-}
+
 declare module "next-auth" {
   interface Session {
     user?: {
@@ -51,12 +46,12 @@ async function refreshAccessToken(tokenObject: Account):Promise<NewAccount> {
 
 }
 const callbacks = {
-  session: async({ session, user }:{session: Session,user: User|AdapterUser })=>{
-    if (session.user) {
-      session.user.id = user.id;
-    }
-    return session;
-  },
+  // session: async({ session, user }:{session: Session,user: User|AdapterUser })=>{
+  //   if (session.user) {
+  //     session.user.id = user.id;
+  //   }
+  //   return session;
+  // },
   signIn: async ({user,account,profile}:{user: User|AdapterUser, account: Account|null, profile?: Profile|undefined}) => {
     console.log("user,account,profile",user,account,profile)
     return true
@@ -84,6 +79,17 @@ const callbacks = {
       // }
      return token;
       // If the call arrives after 23 hours have passed, we allow to refresh the token.
+  },
+  session: async ({session,token,user,newSession}: { session: Session; token: JWT; user: AdapterUser; } & { newSession: any; trigger: "update"; }) => {
+    console.log("session,token,user,newSession",session,token,user,newSession)
+    let curSession :Session = session;
+      // Here we pass accessToken to the client to be used in authentication with your API
+      
+      if(curSession.user){
+        curSession.user.id=token.id as string; ;
+      }
+
+      return curSession;
   },
 }
 type UrlParams = Record<string, unknown>
