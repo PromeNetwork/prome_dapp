@@ -6,6 +6,7 @@ import {Provider} from "next-auth/providers"
 import FacebookProvider,{type FacebookProfile} from "next-auth/providers/facebook"
 import Twitter from "next-auth/providers//twitter"
 import axios from 'axios';
+import { DefaultSession } from "next-auth";
 import  type {
   GetServerSidePropsContext,
   NextApiRequest,
@@ -16,6 +17,13 @@ interface newSession extends Session{
   expires_at?:number
   error?:string
   id?:string
+}
+declare module "next-auth" {
+  interface Session {
+    user?: {
+      id: string;
+    } & DefaultSession["user"];
+  }
 }
 interface NewAccount extends Account{
   error?:string
@@ -40,8 +48,15 @@ async function refreshAccessToken(tokenObject: Account):Promise<NewAccount> {
           error: "RefreshAccessTokenError",
       }
   }
+
 }
 const callbacks = {
+  session: async({ session, user }:{session: Session,user: User|AdapterUser })=>{
+    if (session.user) {
+      session.user.id = user.id;
+    }
+    return session;
+  },
   signIn: async ({user,account,profile}:{user: User|AdapterUser, account: Account|null, profile?: Profile|undefined}) => {
     console.log("user,account,profile",user,account,profile)
     return true

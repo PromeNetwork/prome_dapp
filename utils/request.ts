@@ -4,7 +4,7 @@ import {getCurrentAccessToken, getCurrentAddress} from "@utils/storageUtils";
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 
 const service = axios.create({
-  baseURL: 'http://127.0.0.1:3002',
+  baseURL: 'http://127.0.0.1:3002/api/',
   timeout: 60000
 })
 

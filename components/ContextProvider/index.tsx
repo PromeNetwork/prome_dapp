@@ -7,6 +7,7 @@ import {
     WalletDisconnectButton,
     WalletMultiButton
 } from '@solana/wallet-adapter-react-ui';
+import {setCurrentAddress} from '@utils/storageUtils'
 import { type SolanaSignInInput } from '@solana/wallet-standard-features';
 import { verifySignIn } from '@solana/wallet-standard-util';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -157,6 +158,7 @@ export const autoSignIn = async (adapter: Adapter) => {
     if (!verifySignIn(input, output)) throw new Error('Sign In verification failed!');
     
     await saveToken(adapter.publicKey?.toBase58().toString()!,res.token.accessToken)
+    await setCurrentAddress(address)
     return false;
 };
 

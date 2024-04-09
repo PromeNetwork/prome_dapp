@@ -8,6 +8,7 @@ import UnShare from "@images/share.png";
 import Image from "next/image";
 import UnQr from "@images/qrcode.png";
 import  SharePic from "@images/share_temp.png";
+import { useSession, signIn, signOut } from "next-auth/react"
 import * as api from "@api/index";
 import Link from "next/link";
 import { Button, Input, Select, Option, Dialog, DialogBody } from "@material-tailwind/react";
@@ -31,6 +32,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
     const { countries } = useCountries();
     const [inviteUrl, setInviteUrl] = useState("");
     const [isShowPic, setIsShowPic] = useState(false);
+    const { data: session,...res } = useSession()
     const [questionnaire, setQuestionnaire] = useState<Question>({
         country: "",
         equipment: "",
@@ -42,7 +44,7 @@ function TaskInner(props: { task?: Task[] ,step:number, account?:{address:string
 
  
     const taskStatus:{
-      [k in TaskType]?:'complete'|'incomplete'
+      [k in TaskType]?:'complete'|'incomplete'|'pending'
     }={
         FOLLOW_TWITTER:'incomplete',
         INTERACT_TWITTER:'incomplete',
@@ -193,16 +195,19 @@ const sendEmailVerify=async (email:string)=>{
            await loginWallet()
         }
 
-      const verifyTwitter = () => {
+      const verifyTwitter = async () => {
         if (!onVerifyBefore()) {
           return;
         }
+        if(!session) {
+          return signIn('twitter')
+        }
         setLoadings({...loadings,FOLLOW_TWITTER:true})
-        setTimeout(() => {
-            setLoadings({...loadings,FOLLOW_TWITTER:false})
-            toast.success('Successfully verified Twitter');
-            props.setProgress(1)
-            }, 2000);
+
+        await api.login.addTwitterTask(account?.address!,'FOLLOW_TWITTER','pending', `${session.user?.name!}-${session.user?.id!}`)
+        setLoadings({...loadings,FOLLOW_TWITTER:false})
+        toast.success('Successfully verified Twitter');
+        props.setProgress(1)
        
       }
     
@@ -231,8 +236,8 @@ const sendEmailVerify=async (email:string)=>{
             }}
           >
             <div className="block bg-card">
-              <Button loading={loadings?.FOLLOW_TWITTER } className="rounded-3xl  bg-connect text-btn/[0.8] text-xs" onClick={verifyTwitter}>
-                Verify
+              <Button loading={loadings?.FOLLOW_TWITTER || taskStatus['FOLLOW_TWITTER']=="pending" } className="rounded-3xl  bg-connect text-btn/[0.8] text-xs" onClick={verifyTwitter}>
+                {taskStatus['FOLLOW_TWITTER']=="pending"?"Pending":"Verify"}
               </Button>
             </div>
           </TaskCard>

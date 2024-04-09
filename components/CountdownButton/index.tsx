@@ -35,7 +35,7 @@ export function CountdownButton({email,sendCode}:{email: string|undefined,sendCo
     disabled={disabled||!validateEmail(email) }
     className="text-nowrap   ml-1 rounded-full bg-connect text-btn/[0.8] text-xs  min-w-[70px]   cursor-pointer"
   >
-    {disabled ? `${countdown} 秒后` : '验证码'}
+    {disabled ? `${countdown} sec` : 'code'}
   </Button>
 
         </>

@@ -1,11 +1,13 @@
 import {useEffect ,useMemo, useState} from "react";
-const base_url=process.env.BASE_URL
+const API_URL = process.env.API_URL
+console.log("use task API_URL",API_URL)
 import {
     QueryClient,
     QueryClientProvider,
     useQuery,
   } from '@tanstack/react-query'
  import {Coupon } from '@api/index'
+ import {getToken} from '@components/index'
   
 export type  TaskType ='FOLLOW_TWITTER' | 'INTERACT_TWITTER'| 'LIKE_TWEETER' | 'JOIN_TELEGRAM' | 'LOGIN_WALLET' | 'VERIFY_EMAIL' | 'QUESTION'|'SHARE'
 export interface Task {
@@ -23,7 +25,13 @@ export function useTaskQuery(address?:string,progress?:number):{isPending:boolea
             if(!address){
                 return []
             }
-            const response = await fetch(`${base_url}/task/tasks/${address}`)
+            const token =await getToken(address)
+            const response = await fetch(`${API_URL}/task/tasks/${address}`,{
+                method: 'GET',
+                headers: {
+                  'Authorization': 'Bearer ' +  token
+                }
+              })
             if (!response.ok) {
             throw new Error('Network response was not ok')
             }
@@ -41,7 +49,7 @@ export function useCouponQuery(address?:string):{isPending:boolean,error:Error|n
             if(!address){
                 return []
             }
-            const response = await fetch(`${base_url}/task/coupons/${address}`)
+            const response = await fetch(`${API_URL}/task/coupons/${address}`)
             if (!response.ok) {
             throw new Error('Network response was not ok')
             }
