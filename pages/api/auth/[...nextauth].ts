@@ -85,17 +85,6 @@ const callbacks = {
      return token;
       // If the call arrives after 23 hours have passed, we allow to refresh the token.
   },
-  session: async ({session,token}: { session: Session; token: JWT; user: AdapterUser; } & { newSession: any; trigger: "update"; }) => {
-    console.log("session,token",session,token)
-    let newSession :newSession = session;
-      // Here we pass accessToken to the client to be used in authentication with your API
-      newSession.accessToken = token.accessToken as string;
-      newSession.expires_at = token.expires_at as number;
-      newSession.error = token.error as string;
-      newSession.id=token.id as string; ;
-
-      return newSession;
-  },
 }
 type UrlParams = Record<string, unknown>
 
