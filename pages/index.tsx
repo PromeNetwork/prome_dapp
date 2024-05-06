@@ -23,7 +23,7 @@ export default function Home() {
 
           </div>
           <div className="min-w-fit flex-1 lg:mt-5 md:mt-5 ">
-           <Event event={{startTime:"2024-04-22 21:00:00", endTime: "2024-04-30 21:00:00"}}  />
+           <Event event={{startTime:"2024-04-22 21:00:00", endTime: "2024-05-30 21:00:00"}}  />
           </div>
 
           </div>
